@@ -1,56 +1,71 @@
-# Frida 自动启动模块使用说明
+# Frida 反检测模块使用说明
 
-## 1. 模块概述
-本模块 **frida_auto_start** 会在系统启动时自动将 `frida-server` 推送到 `/data/local/tmp/`，授予可执行权限并以 `-l 0.0.0.0` 方式后台运行。模块自带一个守护进程 (`service.sh`) 会每 30 秒检查 `frida-server` 是否仍在运行，若异常退出则重新启动，保证 Frida 随系统保持可用。
+## 1. 版本对比
 
-## 2. 文件结构
-```text
-frida_auto_start/
-│   module.prop            # Magisk 模块元信息 (author=哄鼠)
-│   post-fs-data.sh       # 启动时复制并运行 frida-server
-│   service.sh            # 守护进程，确保 server 持续运行
-│   README.txt            # 本说明的备份
-│   frida-server          # 已经放入的 frida‑server‑17.9.10‑android‑x86_64 二进制
+| 版本 | 文件 | 进程名 | 端口 | 反检测 |
+|:---|:---|:---|:---|:---|
+| **v1 (原版)** | `frida_auto_start.zip` | `frida-server` | 27042 | 无 |
+| **v2 (魔改)** | `frida_anti_detect_v2.zip` | `sys-helper` | 31337 | 全自动 |
+
+## 2. v2 魔改内容
+
+| 改动 | v1 原版 | v2 增强版 |
+|:---|:---|:---|
+| 二进制名 | `frida-server` | `sys-helper` |
+| 安装路径 | `/data/local/tmp/frida-server` | `/data/local/tmp/.cache/sys-helper` |
+| 监听端口 | 27042 (知名) | 31337 (自定义) |
+| 监听地址 | `0.0.0.0` (全网) | `127.0.0.1` (仅本地) |
+| 模块 ID | `frida_auto_start` | `frida_hidden` |
+| 显示名 | "Frida Auto-Start" | "System Helper Service" |
+| 作者 | `哄鼠` | `anonymous` |
+| 反检测脚本 | 无 | **anti_detect.js 自动注入** |
+
+## 3. anti_detect.js 防护清单
+
+### Native 层 (libc Hook)
+| 函数 | 拦截内容 |
+|:---|:---|
+| `fopen` | 31 条 root/magisk/frida/模拟器路径 → 返回 NULL |
+| `open` | 同上 → 返回 -1 |
+| `access` | 同上 → 返回 -1 |
+| `stat` | 同上 → 返回 -1 |
+
+### Java 层 (Xposed 等效)
+| 目标 | 拦截内容 |
+|:---|:---|
+| `File.exists` | 31 条屏蔽路径 |
+| `Runtime.exec` | `getenforce`→Enforcing, 过滤 frida 关键字 |
+| `SystemProperties.get` | 伪造 `ro.build.tags`/`ro.debuggable`/`ro.kernel.qemu` 等 |
+| `PackageManager.getPackageInfo` | 隐藏 root/magisk/xposed 包名 |
+| `ClassLoader.loadClass` | 隐藏 Xposed/Magisk 类 |
+| `Throwable.getStackTrace` | 清洗 Xposed 堆栈 |
+
+## 4. 安装步骤
+
+```bat
+adb push frida_anti_detect_v2.zip /sdcard/
+adb shell su -c "magisk --install-module /sdcard/frida_anti_detect_v2.zip"
+adb reboot
 ```
 
-## 3. 安装步骤
-1. **拷贝 ZIP**：本目录下的 `frida_auto_start.zip` 即为完整的 Magisk 安装包。
-2. **使用 Magisk Manager 安装**：打开 MuMu 模拟器内的 Magisk Manager，点击 **Install → Install from storage**，选择 `frida_auto_start.zip` 完成安装。
-   - 若没有 UI，可直接通过 ADB 安装：
-     ```bat
-     D:\MuMuPlayer\nx_main\adb.exe push "C:\Users\20751\Desktop\frida模块\frida_auto_start.zip" /data/local/tmp/
-     D:\MuMuPlayer\nx_main\adb.exe shell su -c "magisk --install-module /data/local/tmp/frida_auto_start.zip"
-     ```
-3. **重启模拟器**：确保 Magisk 加载新模块。`adb reboot` 后等待系统启动完成。
+## 5. 连接使用
 
-## 4. 验证安装
-- 进入 shell 并检查进程：
-  ```bat
-  D:\MuMuPlayer\nx_main\adb.exe shell su -c "pidof frida-server"
-  ```
-  若返回非空 PID，说明 Frida 已在后台运行。
-- 查看二进制是否已放置：
-  ```bat
-  D:\MuMuPlayer\nx_main\adb.exe shell su -c "ls -l /data/local/tmp/frida-server"
-  ```
+```bash
+# 端口转发（v2 用 31337 端口）
+adb forward tcp:31337 tcp:31337
 
-## 5. 使用 Frida 客户端
-- **本地 USB 连接**：
-  ```bash
-  frida -U -p <PID> -l your_script.js
-  ```
-- **端口转发（如需远程）**：
-  ```bat
-  D:\MuMuPlayer\nx_main\adb.exe forward tcp:27042 tcp:27042
-  frida -H 127.0.0.1:27042 -p <PID> -l your_script.js
-  ```
+# Python
+import frida
+dev = frida.get_device_manager().add_remote_device("127.0.0.1:31337")
+session = dev.attach("com.target.app")
 
-## 6. 常见问题
-- **Frida 无法启动**：确认 `frida-server` 已具备执行权限（`chmod 755 /data/local/tmp/frida-server`），并在 `post-fs-data.sh` 中路径正确。
-- **模块未加载**：检查 Magisk 状态，确保 `frida_auto_start` 出现在已安装模块列表中 (`magisk --list`).
-- **需要更换平台**：直接替换 `frida-auto_start` 目录下的 `frida-server` 为对应平台（arm/arm64），重新压缩并重新安装即可。
+# 注入反检测脚本
+frida -H 127.0.0.1:31337 -n com.detector.roothook -l /data/local/tmp/.cache/anti_detect.js --no-pause
+```
 
----
-**作者**：哄鼠
-**版本**：1.0
-**发布日期**：2026-05-22
+## 6. 验证
+
+```bash
+adb shell su -c "ps -A | grep sys-helper"       # 应看到 sys-helper
+adb shell su -c "netstat -tlnp | grep 31337"    # 应看到 31337 端口
+```
