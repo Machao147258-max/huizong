@@ -2,6 +2,8 @@
 
 基于 Frida 17.11.0 源码的反检测版本，编译产物为 `nosuke-server`。
 
+> **大文件下载**：`nosuke-server` & `nosuke-src.tar.gz` → **[frida-mogai](https://github.com/Machao147258-max/frida-mogai)**
+
 ## 成品
 
 | 文件 | 说明 |

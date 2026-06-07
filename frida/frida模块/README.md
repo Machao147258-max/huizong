@@ -1,5 +1,7 @@
 # nosuke-server 模块安装说明
 
+> **二进制文件下载**：`nosuke-server` → **[frida-mogai](https://github.com/Machao147258-max/frida-mogai)**
+
 ## 文件结构
 
 ```
