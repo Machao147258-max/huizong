@@ -6,6 +6,7 @@
 
 ```
 汇总/
+├── burp证书刷入/           # MuMu 模拟器 Burp Suite 证书安装与代理配置
 ├── frida/                  # Frida 自动启动 Magisk 模块
 ├── hook(java层)/           # Xposed/LSPosed Java 层 Hook 框架（PassFramework）
 ├── mumu必刷/               # MuMu 模拟器 K40S 伪装 Magisk 模块合集
@@ -142,15 +143,34 @@ frida/
 
 ---
 
-## 环境要求
+## 5. burp证书刷入/ — Burp Suite 证书安装与代理配置
+
+MuMu 模拟器桥接模式下安装 Burp 证书并配置 HTTPS 抓包。
+
+| 文件 | 说明 |
+|:---|:---|
+| `cacert.pem` | Burp Suite DER 证书转 PEM 格式 |
+| `MuMu模拟器Burp证书安装与代理配置.md` | 完整配置指南（证书格式转换、系统推送、代理设置、验证） |
+
+**核心步骤**：
+1. DER → PEM 证书格式转换（PowerShell）
+2. ADB 推送证书到系统证书目录
+3. 桥接模式下 Wi-Fi 代理指向 Burp（`192.168.1.7:8080`）
+4. 验证 HTTPS 抓包
+
+---
+
+## 6. 环境要求
 
 - **模拟器**：MuMu Player 12 (Android 12, x86_64)
 - **Magisk**：已安装并正常运作
 - **Frida**：17.11.0 客户端（PC 端，v3 专用）/ 16.x+（v1/v2）
 - **ADB**：MuMu 自带 `nx_main\adb.exe`
 
+- **Burp Suite**：专业版 / 社区版
+
 ---
 
-## 免责声明
+## 7. 免责声明
 
 本项目仅供安全研究与学习使用，请勿用于非法用途。
