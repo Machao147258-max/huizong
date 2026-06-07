@@ -65,6 +65,8 @@ frida/
     └── README.md               # 编译说明
 ```
 
+> **大文件**：`nosuke-server` (111MB) 和 `nosuke-src.tar.gz` (379MB) 存放在独立仓库 **[frida-mogai](https://github.com/Machao147258-max/frida-mogai)**。
+
 **安装**：Magisk Manager → 模块 → 从本地安装，选择对应 zip，重启即可。
 
 ---
