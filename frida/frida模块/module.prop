@@ -1,0 +1,6 @@
+id=frida_hidden_v3
+name=System Library Loader
+version=17.11.0
+versionCode=1711
+author=anonymous
+description=Preload optimization service for Android runtime library integration.

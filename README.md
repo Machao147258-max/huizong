@@ -16,14 +16,56 @@
 
 ## 1. frida/ — Frida 自动启动模块
 
-Magisk 模块，系统启动时自动部署 `frida-server`（x86_64），含守护进程保活。
+Magisk 模块，系统启动时自动部署 frida-server（x86_64），含守护进程保活。
 
-| 文件 | 说明 |
-|:---|:---|
-| `frida_auto_start.zip` | Magisk 安装包，含 `post-fs-data.sh` + `service.sh` 守护进程 |
-| `frida模块使用.md` | 安装与使用说明 |
+### 版本对比
 
-**安装**：Magisk Manager → 模块 → 从本地安装，选择 `frida_auto_start.zip`，重启即可。
+| 版本 | 模块文件 | 进程名 | 端口 | 二进制 | 反馈测 |
+|:---|:---|:---|:---|:---|:---|
+| **v1** | `frida_auto_start.zip` | `frida-server` | 27042 | 原版 17.9.11 | 弱 |
+| **v2** | `frida_anti_detect_v2.zip` | `sys-helper` | 31337 | 原版改名 | 中 |
+| **v3** | `frida_hidden_v3.zip` | `sys-helper` | 31337 | **源码级魔改 17.11.0** | 强 |
+
+### v3 魔改详情
+
+v3 基于 Frida 17.11.0 源码编译，对所有可检测特征进行深度修改：
+
+| 检测点 | 原值 | 魔改后 |
+|:---|:---|:---|
+| 二进制名 | `frida-server` | `nosuke-server` |
+| Agent 库名 | `frida-agent.so` | `nosuke-agent.so` |
+| 入口点 | `frida_agent_main` | `nosuke_agent_main` |
+| 线程名 | `frida-*` / `gum-*` | `nosuke-*` |
+| Socket 路径 | `/frida-zymbiote-` | `/nosuk-zymbiote-` |
+| RPC 消息 | `frida:rpc` | Base64 编码 |
+| FIFO 管道 | `linjector-` | 指针散列 |
+| D-Bus 数据目录 | `re.frida.server` | UUID 随机 |
+| 集群端口 | 27052 | 31347 |
+
+### 文件说明
+
+```
+frida/
+├── frida_auto_start.zip       # v1 模块
+├── frida_anti_detect_v2.zip   # v2 模块（原版改名 + anti_detect.js）
+├── frida模块使用.md           # v1+v2 说明文档
+├── frida模���/                 # v3 Magisk 模
+│   ├── frida_hidden_v3.zip    # v3 模块包（可直刷）
+│   ├── anti_detect.js         # 防检测脚本
+│   ├── module.prop            # 模块属性
+│   ├── post-fs-data.sh        # 开机部署脚本
+│   ├── service.sh             # 守护保活脚本
+│   └── README.md              # v3 说明
+└── 魔改frida/                 # v3 源码 & 编译产物
+    ├── nosuke-server           # 编译好的二进制
+    ├── nosuke-full.patch       # 完整 diff 补丁
+    ├── nosuke-src.tar.gz       # 魔改源码
+    ├── strongr-patches/        # strongR 8个补丁
+    ├── scripts/                # 编译辅助脚本
+    └── README.md               # 编译说明
+```
+
+**安装**：Magisk Manager → 模块 → 从本地安装，选择对应 zip，重启即可。
 
 ---
 
@@ -102,7 +144,7 @@ Magisk 模块，系统启动时自动部署 `frida-server`（x86_64），含守�
 
 - **模拟器**：MuMu Player 12 (Android 12, x86_64)
 - **Magisk**：已安装并正常运作
-- **Frida**：16.x+ 客户端（PC 端）
+- **Frida**：17.11.0 客户端（PC 端，v3 专用）/ 16.x+（v1/v2）
 - **ADB**：MuMu 自带 `nx_main\adb.exe`
 
 ---

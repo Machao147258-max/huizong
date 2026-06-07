@@ -1,0 +1,3425 @@
+diff --git a/.github/CODEOWNERS b/.github/CODEOWNERS
+old mode 100644
+new mode 100755
+diff --git a/.github/FUNDING.yml b/.github/FUNDING.yml
+old mode 100644
+new mode 100755
+diff --git a/.github/actions/setup-apple-certificates/action.yml b/.github/actions/setup-apple-certificates/action.yml
+old mode 100644
+new mode 100755
+diff --git a/.github/vcpkg-triplets/arm64-windows-release.cmake b/.github/vcpkg-triplets/arm64-windows-release.cmake
+old mode 100644
+new mode 100755
+diff --git a/.github/vcpkg-triplets/x64-windows-release.cmake b/.github/vcpkg-triplets/x64-windows-release.cmake
+old mode 100644
+new mode 100755
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+old mode 100644
+new mode 100755
+diff --git a/.gitignore b/.gitignore
+old mode 100644
+new mode 100755
+diff --git a/.gitmodules b/.gitmodules
+old mode 100644
+new mode 100755
+diff --git a/BSDmakefile b/BSDmakefile
+old mode 100644
+new mode 100755
+diff --git a/CLAUDE.md b/CLAUDE.md
+old mode 100644
+new mode 100755
+diff --git a/COPYING b/COPYING
+old mode 100644
+new mode 100755
+diff --git a/Makefile b/Makefile
+old mode 100644
+new mode 100755
+diff --git a/README.md b/README.md
+old mode 100644
+new mode 100755
+diff --git a/compat/build.py b/compat/build.py
+old mode 100644
+new mode 100755
+index 556f34b3..09ae59d1
+--- a/compat/build.py
++++ b/compat/build.py
+@@ -238,14 +238,14 @@ def setup(role: Role,
+                 if "helper" in components:
+                     outputs[group] += [
+                         Output(identifier=f"helper_{kind}",
+-                               name=f"frida-helper-{other_arch}",
++                               name=f"nosuke-helper-{other_arch}",
+                                file=HELPER_FILE_UNIX,
+                                target=HELPER_TARGET),
+                     ]
+                 if "agent" in components:
+                     outputs[group] += [
+                         Output(identifier=f"agent_{kind}",
+-                               name=f"frida-agent-{other_arch}.dylib",
++                               name=f"nosuke-agent-{other_arch}.dylib",
+                                file=AGENT_FILE_DARWIN,
+                                target=AGENT_TARGET),
+                     ]
+@@ -259,7 +259,7 @@ def setup(role: Role,
+                 if "server" in components and assets == "installed":
+                     outputs[group] += [
+                         Output(identifier=f"server_{kind}",
+-                               name=f"frida-server-{other_arch}",
++                               name=f"nosuke-server-{other_arch}",
+                                file=SERVER_FILE_UNIX,
+                                target=SERVER_TARGET),
+                     ]
+@@ -346,14 +346,14 @@ def setup(role: Role,
+             if host_os == "android" and host_arch in {"x86_64", "x86"} and "agent" in components:
+                 outputs[OutputGroup("arm")] = [
+                     Output(identifier="agent_emulated_legacy",
+-                           name="frida-agent-arm.so",
++                           name="nosuke-agent-arm.so",
+                            file=AGENT_FILE_ELF,
+                            target=AGENT_TARGET),
+                 ]
+                 if host_arch == "x86_64":
+                     outputs[OutputGroup("arm64")] = [
+                         Output(identifier="agent_emulated_modern",
+-                               name="frida-agent-arm64.so",
++                               name="nosuke-agent-arm64.so",
+                                file=AGENT_FILE_ELF,
+                                target=AGENT_TARGET),
+                     ]
+@@ -801,22 +801,22 @@ OVERRIDDEN_COMPAT_OPTIONS = {
+     "agent_emulated_legacy",
+ }
+ 
+-HELPER_TARGET = "frida-helper"
+-HELPER_FILE_WINDOWS = Path("src") / "frida-helper.exe"
+-HELPER_FILE_UNIX = Path("src") / "frida-helper"
++HELPER_TARGET = "nosuke-helper"
++HELPER_FILE_WINDOWS = Path("src") / "nosuke-helper.exe"
++HELPER_FILE_UNIX = Path("src") / "nosuke-helper"
+ 
+-AGENT_TARGET = "frida-agent"
+-AGENT_FILE_WINDOWS = Path("lib") / "agent" / "frida-agent.dll"
+-AGENT_FILE_DARWIN = Path("lib") / "agent" / "frida-agent.dylib"
+-AGENT_FILE_ELF = Path("lib") / "agent" / "frida-agent.so"
++AGENT_TARGET = "nosuke-agent"
++AGENT_FILE_WINDOWS = Path("lib") / "agent" / "nosuke-agent.dll"
++AGENT_FILE_DARWIN = Path("lib") / "agent" / "nosuke-agent.dylib"
++AGENT_FILE_ELF = Path("lib") / "agent" / "nosuke-agent.so"
+ 
+ GADGET_TARGET = "frida-gadget"
+ GADGET_FILE_WINDOWS = Path("lib") / "gadget" / "frida-gadget.dll"
+ GADGET_FILE_DARWIN = Path("lib") / "gadget" / "frida-gadget.dylib"
+ GADGET_FILE_ELF = Path("lib") / "gadget" / "frida-gadget.so"
+ 
+-SERVER_TARGET = "frida-server"
+-SERVER_FILE_UNIX = Path("server") / "frida-server"
++SERVER_TARGET = "nosuke-server"
++SERVER_FILE_UNIX = Path("server") / "nosuke-server"
+ 
+ MSVS_ENVVARS = {
+     "PLATFORM",
+diff --git a/compat/install-renamed.py b/compat/install-renamed.py
+old mode 100644
+new mode 100755
+diff --git a/compat/meson.build b/compat/meson.build
+old mode 100644
+new mode 100755
+diff --git a/configure.bat b/configure.bat
+old mode 100644
+new mode 100755
+diff --git a/inject/frida-inject.xcent b/inject/frida-inject.xcent
+old mode 100644
+new mode 100755
+index ecbeb720..3a71a507
+--- a/inject/frida-inject.xcent
++++ b/inject/frida-inject.xcent
+@@ -7,7 +7,7 @@
+ 	<key>adi-client</key>
+ 	<string>166430402</string>
+ 	<key>application-identifier</key>
+-	<string>re.frida.Server</string>
++	<string>com.nosuke.Server</string>
+ 	<key>aps-connection-initiate</key>
+ 	<true/>
+ 	<key>auth-key-vault-client</key>
+diff --git a/inject/inject-glue.c b/inject/inject-glue.c
+old mode 100644
+new mode 100755
+diff --git a/inject/inject-glue.h b/inject/inject-glue.h
+old mode 100644
+new mode 100755
+diff --git a/inject/inject.vala b/inject/inject.vala
+old mode 100644
+new mode 100755
+diff --git a/inject/meson.build b/inject/meson.build
+old mode 100644
+new mode 100755
+index 713c731c..82f903de
+--- a/inject/meson.build
++++ b/inject/meson.build
+@@ -18,7 +18,7 @@ raw_inject = executable('frida-inject-raw', inject_sources,
+ custom_target('frida-inject',
+   input: [raw_inject, 'frida-inject.xcent'],
+   output: 'frida-inject' + exe_suffix,
+-  command: post_process + ['executable', 're.frida.Inject', '@INPUT1@'],
++  command: post_process + ['executable', 'com.nosuke.Inject', '@INPUT1@'],
+   install: true,
+   install_dir: get_option('bindir'),
+ )
+diff --git a/lib/agent/agent-glue.c b/lib/agent/agent-glue.c
+old mode 100644
+new mode 100755
+index d354fe09..7935c1e6
+--- a/lib/agent/agent-glue.c
++++ b/lib/agent/agent-glue.c
+@@ -1,4 +1,4 @@
+-#include "frida-agent.h"
++#include "nosuke-agent.h"
+ 
+ #include "frida-base.h"
+ #include "frida-payload.h"
+@@ -78,7 +78,7 @@ JNI_OnLoad (JavaVM * vm, void * reserved)
+ {
+   FridaAgentBridgeState * state = reserved;
+ 
+-  frida_agent_main (state->agent_parameters, &state->unload_policy, state->injector_state);
++  nosuke_agent_main (state->agent_parameters, &state->unload_policy, state->injector_state);
+ 
+   return JNI_VERSION_1_6;
+ }
+diff --git a/lib/agent/agent.vala b/lib/agent/agent.vala
+old mode 100644
+new mode 100755
+index f99f31f5..50152933
+--- a/lib/agent/agent.vala
++++ b/lib/agent/agent.vala
+@@ -1,4 +1,5 @@
+ namespace Frida.Agent {
++	[CCode (cname = "nosuke_agent_main")]
+ 	public void main (string agent_parameters, ref Frida.UnloadPolicy unload_policy, void * injector_state) {
+ 		if (Runner.shared_instance == null)
+ 			Runner.create_and_run (agent_parameters, ref unload_policy, injector_state);
+diff --git a/lib/agent/dummy.cpp b/lib/agent/dummy.cpp
+old mode 100644
+new mode 100755
+diff --git a/lib/agent/frida-agent-android.version b/lib/agent/frida-agent-android.version
+deleted file mode 100644
+index c273bd0c..00000000
+--- a/lib/agent/frida-agent-android.version
++++ /dev/null
+@@ -1,8 +0,0 @@
+-{
+-  global:
+-    frida_agent_main;
+-    JNI_OnLoad;
+-
+-  local:
+-    *;
+-};
+diff --git a/lib/agent/frida-agent-glibc.version b/lib/agent/frida-agent-glibc.version
+deleted file mode 100644
+index abbbc38b..00000000
+--- a/lib/agent/frida-agent-glibc.version
++++ /dev/null
+@@ -1,14 +0,0 @@
+-FRIDA_1.0 {
+-  global:
+-    frida_agent_main;
+-
+-  local:
+-    *;
+-};
+-
+-GLIBC_2.2.5 {
+-  local:
+-    fopen*;
+-    fseeko*;
+-    ftello*;
+-} FRIDA_1.0;
+diff --git a/lib/agent/frida-agent-x86.symbols b/lib/agent/frida-agent-x86.symbols
+deleted file mode 100644
+index 253690b1..00000000
+--- a/lib/agent/frida-agent-x86.symbols
++++ /dev/null
+@@ -1 +0,0 @@
+-_frida_agent_main
+diff --git a/lib/agent/frida-agent.def b/lib/agent/frida-agent.def
+deleted file mode 100644
+index 7634e3fd..00000000
+--- a/lib/agent/frida-agent.def
++++ /dev/null
+@@ -1,2 +0,0 @@
+-EXPORTS
+-	frida_agent_main
+diff --git a/lib/agent/frida-agent.symbols b/lib/agent/frida-agent.symbols
+deleted file mode 100644
+index 53d1914a..00000000
+--- a/lib/agent/frida-agent.symbols
++++ /dev/null
+@@ -1 +0,0 @@
+-frida_agent_main
+diff --git a/lib/agent/frida-agent.version b/lib/agent/frida-agent.version
+deleted file mode 100644
+index d9571f63..00000000
+--- a/lib/agent/frida-agent.version
++++ /dev/null
+@@ -1,7 +0,0 @@
+-{
+-  global:
+-    frida_agent_main;
+-
+-  local:
+-    *;
+-};
+diff --git a/lib/agent/meson.build b/lib/agent/meson.build
+old mode 100644
+new mode 100755
+index 77f63d51..bf48beb4
+--- a/lib/agent/meson.build
++++ b/lib/agent/meson.build
+@@ -31,19 +31,19 @@ if build_agent
+ 
+   if host_os_family == 'windows'
+     if host_toolchain != 'microsoft'
+-      symfile = (host_arch == 'x86') ? 'frida-agent-x86.symbols' : 'frida-agent.symbols'
++      symfile = (host_arch == 'x86') ? 'nosuke-agent-x86.symbols' : 'nosuke-agent.symbols'
+       extra_link_args += '-Wl,--retain-symbols-file,' + meson.current_source_dir() / symfile
+       extra_link_depends += symfile
+     endif
+   elif host_os_family == 'darwin'
+-    extra_link_args += '-Wl,-exported_symbol,_frida_agent_main'
++    extra_link_args += '-Wl,-exported_symbol,_nosuke_agent_main'
+   else
+     if libc == 'glibc'
+-      symscript = 'frida-agent-glibc.version'
++      symscript = 'nosuke-agent-glibc.version'
+     elif host_os == 'android'
+-      symscript = 'frida-agent-android.version'
++      symscript = 'nosuke-agent-android.version'
+     else
+-      symscript = 'frida-agent.version'
++      symscript = 'nosuke-agent.version'
+     endif
+     extra_link_args += '-Wl,--version-script,' + meson.current_source_dir() / symscript
+     extra_link_depends += symscript
+@@ -54,14 +54,14 @@ if build_agent
+     extra_link_args += '-Wl,-Bsymbolic'
+   endif
+ 
+-  raw_agent = shared_library('frida-agent-raw', agent_sources,
++  raw_agent = shared_library('nosuke-agent-raw', agent_sources,
+     name_prefix: 'lib',
+     c_args: frida_component_cflags,
+-    vala_header: 'frida-agent.h',
++    vala_header: 'nosuke-agent.h',
+     vala_args: [base_vala_args, payload_vala_args, extra_vala_args],
+     link_args: extra_link_args,
+     link_depends: extra_link_depends,
+-    vs_module_defs: 'frida-agent.def',
++    vs_module_defs: 'nosuke-agent.def',
+     override_options: ['b_asneeded=true'],
+     dependencies: [gio_dep, gee_dep, gum_dep, gumjs_dep, base_dep, pipe_dep, tls_provider_dep, payload_dep],
+   )
+@@ -70,18 +70,18 @@ if build_agent
+   if host_os_family != 'darwin'
+     operations += ['--move', 'destructor', 'frida_libc_shim_deinit', 'first']
+   endif
+-  modulated_agent = custom_target('frida-agent-modulated',
++  modulated_agent = custom_target('nosuke-agent-modulated',
+     input: raw_agent,
+-    output: 'libfrida-agent-modulated' + shlib_suffix,
++    output: 'libnosuke-agent-modulated' + shlib_suffix,
+     command: modulate + operations,
+   )
+ 
+   if host_os_family == 'darwin'
+-    identity = 'FridaAgent'
++    identity = 'NosukeAgent'
+   else
+     identity = agent_name
+   endif
+-  agent = custom_target('frida-agent',
++  agent = custom_target('nosuke-agent',
+     input: modulated_agent,
+     output: need_universal_agent ? f'@agent_name@-@host_abi@' : agent_name,
+     command: post_process + ['shared-library', identity],
+@@ -95,7 +95,7 @@ endif
+ 
+ if need_universal_agent
+   if build_agent
+-    custom_target('frida-agent-universal',
++    custom_target('nosuke-agent-universal',
+       input: agent,
+       output: agent_name,
+       command: [
+@@ -110,7 +110,7 @@ if need_universal_agent
+       install_dir: asset_dir,
+     )
+   else
+-    custom_target('frida-agent-universal',
++    custom_target('nosuke-agent-universal',
+       output: agent_name,
+       command: [
+         lipo,
+diff --git a/lib/agent/nosuke-agent-android.version b/lib/agent/nosuke-agent-android.version
+new file mode 100755
+index 00000000..6da17e54
+--- /dev/null
++++ b/lib/agent/nosuke-agent-android.version
+@@ -0,0 +1,4 @@
++{
++  global: nosuke_agent_main;
++  local: *;
++};
+diff --git a/lib/agent/nosuke-agent-glibc.version b/lib/agent/nosuke-agent-glibc.version
+new file mode 100755
+index 00000000..84ec76e1
+--- /dev/null
++++ b/lib/agent/nosuke-agent-glibc.version
+@@ -0,0 +1,3 @@
++GLIBC_2.17 {
++  global: nosuke_agent_main;
++};
+diff --git a/lib/agent/nosuke-agent-x86.symbols b/lib/agent/nosuke-agent-x86.symbols
+new file mode 100755
+index 00000000..0a74ad0b
+--- /dev/null
++++ b/lib/agent/nosuke-agent-x86.symbols
+@@ -0,0 +1 @@
++_nosuke_agent_main
+diff --git a/lib/agent/nosuke-agent.def b/lib/agent/nosuke-agent.def
+new file mode 100755
+index 00000000..29de55e2
+--- /dev/null
++++ b/lib/agent/nosuke-agent.def
+@@ -0,0 +1,2 @@
++EXPORTS
++	nosuke_agent_main
+diff --git a/lib/agent/nosuke-agent.symbols b/lib/agent/nosuke-agent.symbols
+new file mode 100755
+index 00000000..8ee25c48
+--- /dev/null
++++ b/lib/agent/nosuke-agent.symbols
+@@ -0,0 +1 @@
++nosuke_agent_main
+diff --git a/lib/agent/nosuke-agent.version b/lib/agent/nosuke-agent.version
+new file mode 100755
+index 00000000..6da17e54
+--- /dev/null
++++ b/lib/agent/nosuke-agent.version
+@@ -0,0 +1,4 @@
++{
++  global: nosuke_agent_main;
++  local: *;
++};
+diff --git a/lib/base/asset-location.vala b/lib/base/asset-location.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/buffer-glue.c b/lib/base/buffer-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/buffer.vala b/lib/base/buffer.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/channel.vala b/lib/base/channel.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/corefoundation.vala b/lib/base/corefoundation.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/dbus.vala b/lib/base/dbus.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-atomics.h b/lib/base/frida-atomics.h
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-atomics.vapi b/lib/base/frida-atomics.vapi
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-darwin.c b/lib/base/frida-darwin.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-darwin.h b/lib/base/frida-darwin.h
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-jni.h b/lib/base/frida-jni.h
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-linux-bpf.h b/lib/base/frida-linux-bpf.h
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-linux-perf-event.h b/lib/base/frida-linux-perf-event.h
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-linux.vapi b/lib/base/frida-linux.vapi
+old mode 100644
+new mode 100755
+diff --git a/lib/base/frida-tvos.h b/lib/base/frida-tvos.h
+old mode 100644
+new mode 100755
+diff --git a/lib/base/fs.vala b/lib/base/fs.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/Makefile b/lib/base/linux-syscalls/Makefile
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/arm-glue.c b/lib/base/linux-syscalls/arm-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/arm.vala b/lib/base/linux-syscalls/arm.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/arm64-glue.c b/lib/base/linux-syscalls/arm64-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/arm64.vala b/lib/base/linux-syscalls/arm64.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/mips-glue.c b/lib/base/linux-syscalls/mips-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/mips.vala b/lib/base/linux-syscalls/mips.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/mips64-glue.c b/lib/base/linux-syscalls/mips64-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/mips64.vala b/lib/base/linux-syscalls/mips64.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/s390x-glue.c b/lib/base/linux-syscalls/s390x-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/s390x.vala b/lib/base/linux-syscalls/s390x.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/x86-glue.c b/lib/base/linux-syscalls/x86-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/x86.vala b/lib/base/linux-syscalls/x86.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/x86_64-glue.c b/lib/base/linux-syscalls/x86_64-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux-syscalls/x86_64.vala b/lib/base/linux-syscalls/x86_64.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/linux.vala b/lib/base/linux.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/meson.build b/lib/base/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/base/p2p-glue.c b/lib/base/p2p-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/p2p.vala b/lib/base/p2p.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/posix.vala b/lib/base/posix.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/promise.vala b/lib/base/promise.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/rpc.vala b/lib/base/rpc.vala
+old mode 100644
+new mode 100755
+index c4654527..c6ae2837
+--- a/lib/base/rpc.vala
++++ b/lib/base/rpc.vala
+@@ -17,7 +17,7 @@ namespace Frida {
+ 			var request = new Json.Builder ();
+ 			request
+ 				.begin_array ()
+-				.add_string_value ("frida:rpc")
++				.add_string_value ((string) GLib.Base64.decode("ZnJpZGE6cnBj="))
+ 				.add_string_value (request_id)
+ 				.add_string_value ("call")
+ 				.add_string_value (method)
+@@ -70,7 +70,7 @@ namespace Frida {
+ 		}
+ 
+ 		public bool try_handle_message (string json) {
+-			if (json.index_of ("\"frida:rpc\"") == -1)
++			if (json.index_of ((string) GLib.Base64.decode("ImZyaWRhOnJwYyI=")) == -1)
+ 				return false;
+ 
+ 			var parser = new Json.Parser ();
+@@ -99,7 +99,7 @@ namespace Frida {
+ 				return false;
+ 
+ 			string? type = rpc_message.get_element (0).get_string ();
+-			if (type == null || type != "frida:rpc")
++			if (type == null || type != (string) GLib.Base64.decode("ZnJpZGE6cnBj="))
+ 				return false;
+ 
+ 			var request_id_value = rpc_message.get_element (1);
+diff --git a/lib/base/service.vala b/lib/base/service.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/session-glue.c b/lib/base/session-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/session.vala b/lib/base/session.vala
+old mode 100644
+new mode 100755
+index 7a53e659..36379f37
+--- a/lib/base/session.vala
++++ b/lib/base/session.vala
+@@ -1100,7 +1100,7 @@ namespace Frida {
+ 			throw (IOError) e;
+ 
+ 		if (e is DBusError.UNKNOWN_METHOD) {
+-			throw new Frida.Error.PROTOCOL ("Unable to communicate with remote frida-server; " +
++			throw new Frida.Error.PROTOCOL ("Unable to communicate with remote nosuke-server; " +
+ 				"please ensure that major versions match and that the remote Frida has the " +
+ 				"feature you are trying to use");
+ 		}
+diff --git a/lib/base/socket-glue.c b/lib/base/socket-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/socket.vala b/lib/base/socket.vala
+old mode 100644
+new mode 100755
+index d3cc48f8..80f902ae
+--- a/lib/base/socket.vala
++++ b/lib/base/socket.vala
+@@ -1,6 +1,6 @@
+ namespace Frida {
+-	public const uint16 DEFAULT_CONTROL_PORT = 27042;
+-	public const uint16 DEFAULT_CLUSTER_PORT = 27052;
++	public const uint16 DEFAULT_CONTROL_PORT = 31337;
++	public const uint16 DEFAULT_CLUSTER_PORT = 31347;
+ 
+ 	public SocketConnectable parse_control_address (string? address, uint16 port = 0) throws Error {
+ 		return parse_socket_address (address, port, "127.0.0.1", DEFAULT_CONTROL_PORT);
+@@ -237,7 +237,7 @@ namespace Frida {
+ 		var msg = new Soup.Message.from_uri ("GET", uri);
+ 		Soup.websocket_client_prepare_handshake (msg, origin, null, null);
+ 		msg.request_headers.replace ("Host", make_host_header_value (uri));
+-		msg.request_headers.replace ("User-Agent", "Frida/" + _version_string ());
++		msg.request_headers.replace ("User-Agent", "Nosuke/" + _version_string ());
+ 		msg.request_headers.foreach ((name, val) => {
+ 			request.append (name + ": " + val + "\r\n");
+ 		});
+@@ -651,7 +651,7 @@ namespace Frida {
+ 
+ 			private void on_http_request (Soup.Server server, Soup.ServerMessage msg, string path,
+ 					HashTable<string, string>? query) {
+-				msg.get_response_headers ().replace ("Server", "Frida/" + _version_string ());
++				msg.get_response_headers ().replace ("Server", "Nosuke/" + _version_string ());
+ 
+ 				msg.pause ();
+ 				handle_http_request.begin (msg, path);
+@@ -925,7 +925,7 @@ namespace Frida {
+ <center><h1>301 Moved Permanently</h1></center>
+ <hr><center>%s</center>
+ </body>
+-</html>""".printf ("Frida/" + _version_string ());
++</html>""".printf ("Nosuke/" + _version_string ());
+ 
+ 				if (msg.get_method () == "HEAD") {
+ 					var headers = msg.get_response_headers ();
+diff --git a/lib/base/stream.vala b/lib/base/stream.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/value.vala b/lib/base/value.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/windows.vala b/lib/base/windows.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/xnu-syscalls/xnu-syscalls-glue.c b/lib/base/xnu-syscalls/xnu-syscalls-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/base/xnu-syscalls/xnu-syscalls.vala b/lib/base/xnu-syscalls/xnu-syscalls.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/base/xpc.vala b/lib/base/xpc.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/dummy.cpp b/lib/gadget/dummy.cpp
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/frida-gadget-glibc.version b/lib/gadget/frida-gadget-glibc.version
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/frida-gadget.def b/lib/gadget/frida-gadget.def
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/frida-gadget.symbols b/lib/gadget/frida-gadget.symbols
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/frida-gadget.version b/lib/gadget/frida-gadget.version
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/gadget-darwin.m b/lib/gadget/gadget-darwin.m
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/gadget-glue.c b/lib/gadget/gadget-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/gadget/gadget.vala b/lib/gadget/gadget.vala
+old mode 100644
+new mode 100755
+index 230284c7..43aaa2b0
+--- a/lib/gadget/gadget.vala
++++ b/lib/gadget/gadget.vala
+@@ -1724,7 +1724,7 @@ namespace Frida.Gadget {
+ 				}
+ 
+ 				uint pid = get_process_id ();
+-				string identifier = "re.frida.Gadget";
++				string identifier = "com.nosuke.Gadget";
+ 				string name = "Gadget";
+ 				var no_parameters = make_parameters_dict ();
+ 				this_app = HostApplicationInfo (identifier, name, pid, no_parameters);
+diff --git a/lib/gadget/meson.build b/lib/gadget/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/meson.build b/lib/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/netif/meson.build b/lib/netif/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/netif/tunnel-interface-observer.vala b/lib/netif/tunnel-interface-observer.vala
+old mode 100644
+new mode 100755
+index 4325d0ad..e1e4af94
+--- a/lib/netif/tunnel-interface-observer.vala
++++ b/lib/netif/tunnel-interface-observer.vala
+@@ -4,7 +4,7 @@ public sealed class Frida.TunnelInterfaceObserver : Object, DynamicInterfaceObse
+ 
+ 	private Darwin.SystemConfiguration.DynamicStore? store;
+ 	private Darwin.GCD.DispatchQueue event_queue =
+-		new Darwin.GCD.DispatchQueue ("re.frida.endpoint-enumerator", Darwin.GCD.DispatchQueueAttr.SERIAL);
++		new Darwin.GCD.DispatchQueue ("com.nosuke.endpoint-enumerator", Darwin.GCD.DispatchQueueAttr.SERIAL);
+ 
+ 	private MainContext? main_context;
+ 
+diff --git a/lib/payload/base-agent-session.vala b/lib/payload/base-agent-session.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/cloak.vala b/lib/payload/cloak.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/exit-monitor.vala b/lib/payload/exit-monitor.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/fd-guard.vala b/lib/payload/fd-guard.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/fdt-padder.vala b/lib/payload/fdt-padder.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/fork-monitor.vala b/lib/payload/fork-monitor.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/libc-shim.c b/lib/payload/libc-shim.c
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/libc-shim.h b/lib/payload/libc-shim.h
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/libc-shim.vapi b/lib/payload/libc-shim.vapi
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/meson.build b/lib/payload/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/portal-client.vala b/lib/payload/portal-client.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/process-glue.c b/lib/payload/process-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/process.vala b/lib/payload/process.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/script-engine.vala b/lib/payload/script-engine.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/spawn-monitor-glue.c b/lib/payload/spawn-monitor-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/spawn-monitor.vala b/lib/payload/spawn-monitor.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/syscall-linux-arm.S b/lib/payload/syscall-linux-arm.S
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/syscall-linux-arm64.S b/lib/payload/syscall-linux-arm64.S
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/syscall-linux-mips.S b/lib/payload/syscall-linux-mips.S
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/syscall-linux-x86.S b/lib/payload/syscall-linux-x86.S
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/syscall-linux-x86_64.S b/lib/payload/syscall-linux-x86_64.S
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/syscall-linux.h b/lib/payload/syscall-linux.h
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/thread-suspend-monitor-glue.c b/lib/payload/thread-suspend-monitor-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/thread-suspend-monitor.vala b/lib/payload/thread-suspend-monitor.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/unwind-sitter-glue.c b/lib/payload/unwind-sitter-glue.c
+old mode 100644
+new mode 100755
+diff --git a/lib/payload/unwind-sitter.vala b/lib/payload/unwind-sitter.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/meson.build b/lib/pipe/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe-darwin.c b/lib/pipe/pipe-darwin.c
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe-glue.h b/lib/pipe/pipe-glue.h
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe-sddl.c b/lib/pipe/pipe-sddl.c
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe-sddl.h b/lib/pipe/pipe-sddl.h
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe-unix.c b/lib/pipe/pipe-unix.c
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe-windows.c b/lib/pipe/pipe-windows.c
+old mode 100644
+new mode 100755
+diff --git a/lib/pipe/pipe.vala b/lib/pipe/pipe.vala
+old mode 100644
+new mode 100755
+diff --git a/lib/selinux/frida-selinux.h b/lib/selinux/frida-selinux.h
+old mode 100644
+new mode 100755
+diff --git a/lib/selinux/meson.build b/lib/selinux/meson.build
+old mode 100644
+new mode 100755
+diff --git a/lib/selinux/patch.c b/lib/selinux/patch.c
+old mode 100644
+new mode 100755
+diff --git a/make.bat b/make.bat
+old mode 100644
+new mode 100755
+diff --git a/meson.build b/meson.build
+old mode 100644
+new mode 100755
+index bc5b5606..bfbd6680
+--- a/meson.build
++++ b/meson.build
+@@ -220,8 +220,8 @@ else
+   shlib_suffix = '.so'
+ endif
+ 
+-helper_name = 'frida-helper' + exe_suffix
+-agent_name = 'frida-agent' + shlib_suffix
++helper_name = 'nosuke-helper' + exe_suffix
++agent_name = 'nosuke-agent' + shlib_suffix
+ gadget_name = 'frida-gadget' + shlib_suffix
+ 
+ frida_libdir_name = f'frida-@api_version@'
+@@ -601,8 +601,8 @@ build_gadget = get_option('gadget') \
+     .allowed()
+ 
+ build_server = get_option('server') \
+-    .disable_if(not have_local_backend, error_message: 'frida-server requires the local backend to be included') \
+-    .disable_if(host_os == 'watchos', error_message: 'frida-server not yet supported on watchOS') \
++    .disable_if(not have_local_backend, error_message: 'nosuke-server requires the local backend to be included') \
++    .disable_if(host_os == 'watchos', error_message: 'nosuke-server not yet supported on watchOS') \
+     .disable_auto_if(meson.is_subproject()) \
+     .allowed()
+ 
+diff --git a/meson.options b/meson.options
+old mode 100644
+new mode 100755
+diff --git a/portal/frida-portal.xcent b/portal/frida-portal.xcent
+old mode 100644
+new mode 100755
+diff --git a/portal/meson.build b/portal/meson.build
+old mode 100644
+new mode 100755
+index 07f36ff0..b15ba720
+--- a/portal/meson.build
++++ b/portal/meson.build
+@@ -17,7 +17,7 @@ raw_portal = executable('frida-portal-raw', portal_sources,
+ custom_target('frida-portal',
+   input: [raw_portal, 'frida-portal.xcent'],
+   output: 'frida-portal' + exe_suffix,
+-  command: post_process + ['executable', 're.frida.Portal', '@INPUT1@'],
++  command: post_process + ['executable', 'com.nosuke.Portal', '@INPUT1@'],
+   install: true,
+   install_dir: get_option('bindir'),
+ )
+diff --git a/portal/portal.vala b/portal/portal.vala
+old mode 100644
+new mode 100755
+diff --git a/server/meson.build b/server/meson.build
+old mode 100644
+new mode 100755
+index 8f24cbe7..6ff61a6f
+--- a/server/meson.build
++++ b/server/meson.build
+@@ -15,16 +15,16 @@ endif
+ extra_link_args = []
+ extra_link_depends = []
+ if host_os_family == 'darwin'
+-  symlist = 'frida-server.symbols'
++  symlist = 'nosuke-server.symbols'
+   extra_link_args += ['-Wl,-exported_symbols_list,' + meson.current_source_dir() / symlist]
+   extra_link_depends += [symlist]
+ elif host_os_family != 'windows'
+-  symscript = (host_os == 'freebsd') ? 'frida-server-freebsd.version' : 'frida-server.version'
++  symscript = (host_os == 'freebsd') ? 'nosuke-server-freebsd.version' : 'nosuke-server.version'
+   extra_link_args += ['-Wl,--version-script,' + meson.current_source_dir() / symscript]
+   extra_link_depends += [symscript]
+ endif
+ if host_os == 'macos'
+-  server_plist = 'frida-server.plist'
++  server_plist = 'nosuke-server.plist'
+   extra_link_args += ['-Wl,-sectcreate,__TEXT,__info_plist,' + meson.current_source_dir() / server_plist]
+   extra_link_depends += [server_plist]
+ endif
+@@ -34,26 +34,26 @@ if host_os_family == 'darwin'
+   server_deps += dependency('appleframeworks', modules: ['CoreFoundation'])
+ endif
+ 
+-raw_server = executable('frida-server-raw', server_sources,
++raw_server = executable('nosuke-server-raw', server_sources,
+   vala_args: [core_vala_args, '--pkg=posix'],
+   link_args: extra_link_args,
+   link_depends: extra_link_depends,
+   dependencies: server_deps,
+ )
+ 
+-server_name = 'frida-server' + exe_suffix
++server_name = 'nosuke-server' + exe_suffix
+ need_universal_server = assets_mode == 'installed' and server_compat != ''
+ 
+-server = custom_target('frida-server',
+-  input: [raw_server, 'frida-server.xcent'],
++server = custom_target('nosuke-server',
++  input: [raw_server, 'nosuke-server.xcent'],
+   output: need_universal_server ? f'@server_name@-@host_abi@' : server_name,
+-  command: post_process + ['executable', 're.frida.Server', '@INPUT1@'],
++  command: post_process + ['executable', 'com.nosuke.Server', '@INPUT1@'],
+   install: true,
+   install_dir: get_option('bindir'),
+ )
+ 
+ if need_universal_server
+-  custom_target('frida-server-universal',
++  custom_target('nosuke-server-universal',
+     input: server,
+     output: server_name,
+     command: [
+diff --git a/server/frida-server-freebsd.version b/server/nosuke-server-freebsd.version
+old mode 100644
+new mode 100755
+similarity index 100%
+rename from server/frida-server-freebsd.version
+rename to server/nosuke-server-freebsd.version
+diff --git a/server/frida-server.plist b/server/nosuke-server.plist
+old mode 100644
+new mode 100755
+similarity index 93%
+rename from server/frida-server.plist
+rename to server/nosuke-server.plist
+index 1580573b..3afeb1be
+--- a/server/frida-server.plist
++++ b/server/nosuke-server.plist
+@@ -5,7 +5,7 @@
+ 	<key>CFBundleDevelopmentRegion</key>
+ 	<string>English</string>
+ 	<key>CFBundleIdentifier</key>
+-	<string>re.frida.Server</string>
++	<string>com.nosuke.Server</string>
+ 	<key>CFBundleInfoDictionaryVersion</key>
+ 	<string>6.0</string>
+ 	<key>CFBundleName</key>
+diff --git a/server/frida-server.symbols b/server/nosuke-server.symbols
+old mode 100644
+new mode 100755
+similarity index 100%
+rename from server/frida-server.symbols
+rename to server/nosuke-server.symbols
+diff --git a/server/frida-server.version b/server/nosuke-server.version
+old mode 100644
+new mode 100755
+similarity index 100%
+rename from server/frida-server.version
+rename to server/nosuke-server.version
+diff --git a/server/frida-server.xcent b/server/nosuke-server.xcent
+old mode 100644
+new mode 100755
+similarity index 99%
+rename from server/frida-server.xcent
+rename to server/nosuke-server.xcent
+index 19b54260..94a11aa9
+--- a/server/frida-server.xcent
++++ b/server/nosuke-server.xcent
+@@ -13,7 +13,7 @@
+ 	<key>adi-client</key>
+ 	<string>166430402</string>
+ 	<key>application-identifier</key>
+-	<string>re.frida.Server</string>
++	<string>com.nosuke.Server</string>
+ 	<key>aps-connection-initiate</key>
+ 	<true/>
+ 	<key>auth-key-vault-client</key>
+diff --git a/server/server-darwin.h b/server/server-darwin.h
+old mode 100644
+new mode 100755
+diff --git a/server/server-darwin.m b/server/server-darwin.m
+old mode 100644
+new mode 100755
+diff --git a/server/server-glue.c b/server/server-glue.c
+old mode 100644
+new mode 100755
+diff --git a/server/server-glue.h b/server/server-glue.h
+old mode 100644
+new mode 100755
+diff --git a/server/server-ios-tvos.c b/server/server-ios-tvos.c
+old mode 100644
+new mode 100755
+diff --git a/server/server-ios-tvos.h b/server/server-ios-tvos.h
+old mode 100644
+new mode 100755
+diff --git a/server/server.vala b/server/server.vala
+old mode 100644
+new mode 100755
+index 0d72d595..2f9577f9
+--- a/server/server.vala
++++ b/server/server.vala
+@@ -1,7 +1,7 @@
+ namespace Frida.Server {
+ 	private static Application application;
+ 
+-	private const string DEFAULT_DIRECTORY = "re.frida.server";
++	private const string DEFAULT_DIRECTORY = "com.nosuke.server";
+ 	private static bool output_version = false;
+ 	private static string? device_id = null;
+ 	private static string? listen_address = null;
+@@ -178,7 +178,7 @@ namespace Frida.Server {
+ 		Environment.configure ();
+ 
+ #if DARWIN
+-		var worker = new Thread<int> ("frida-server-main-loop", () => {
++		var worker = new Thread<int> ("nosuke-server-main-loop", () => {
+ 			var exit_code = run_application (device_id, endpoint_params, options, on_ready);
+ 
+ 			_stop_run_loop ();
+diff --git a/src/agent-container.vala b/src/agent-container.vala
+old mode 100644
+new mode 100755
+index eecfa1f6..a7a0ea94
+--- a/src/agent-container.vala
++++ b/src/agent-container.vala
+@@ -28,7 +28,7 @@ namespace Frida {
+ 			}
+ 
+ 			void * main_func_symbol;
+-			var main_func_found = container.module.symbol ("frida_agent_main", out main_func_symbol);
++			var main_func_found = container.module.symbol ("nosuke_agent_main", out main_func_symbol);
+ 			assert (main_func_found);
+ 			container.main_impl = (AgentMainFunc) main_func_symbol;
+ 
+@@ -103,7 +103,7 @@ namespace Frida {
+ 		}
+ 
+ 		private void start_worker_thread () {
+-			thread = new Thread<bool> ("frida-agent-container", run);
++			thread = new Thread<bool> ("nosuke-agent-container", run);
+ 		}
+ 
+ 		private void stop_worker_thread () {
+diff --git a/src/agent.resources b/src/agent.resources
+old mode 100644
+new mode 100755
+diff --git a/src/android-helper/Makefile b/src/android-helper/Makefile
+old mode 100644
+new mode 100755
+diff --git a/src/android-helper/client.vala b/src/android-helper/client.vala
+old mode 100644
+new mode 100755
+diff --git a/src/android-helper/helper.dex b/src/android-helper/helper.dex
+old mode 100644
+new mode 100755
+diff --git a/src/android-helper/meson.build b/src/android-helper/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/android-helper/re/frida/Helper.java b/src/android-helper/re/frida/Helper.java
+old mode 100644
+new mode 100755
+index 37e6fbf9..c4bbfe5a
+--- a/src/android-helper/re/frida/Helper.java
++++ b/src/android-helper/re/frida/Helper.java
+@@ -19,18 +19,18 @@ import org.json.JSONObject;
+ public class Helper {
+ 	public static void main(String[] args) {
+ 		if (args.length != 1) {
+-			System.err.println("Usage: frida-helper <instance-id>");
++			System.err.println("Usage: nosuke-helper <instance-id>");
+ 			System.exit(1);
+ 			return;
+ 		}
+ 
+ 		String instanceId = args[0];
+ 
+-		new File("/data/local/tmp/frida-helper-" + instanceId + ".dex").delete();
++		new File("/data/local/tmp/nosuke-helper-" + instanceId + ".dex").delete();
+ 
+ 		LocalServerSocket socket;
+ 		try {
+-			socket = new LocalServerSocket("/frida-helper-" + instanceId);
++			socket = new LocalServerSocket("/nosuke-helper-" + instanceId);
+ 		} catch (IOException e) {
+ 			System.err.println(e);
+ 			System.exit(2);
+diff --git a/src/android-helper/re/frida/HelperBackend.java b/src/android-helper/re/frida/HelperBackend.java
+old mode 100644
+new mode 100755
+diff --git a/src/android.resources b/src/android.resources
+old mode 100644
+new mode 100755
+diff --git a/src/api/GLib-2.0.gir b/src/api/GLib-2.0.gir
+old mode 100644
+new mode 100755
+diff --git a/src/api/GModule-2.0.gir b/src/api/GModule-2.0.gir
+old mode 100644
+new mode 100755
+diff --git a/src/api/GObject-2.0.gir b/src/api/GObject-2.0.gir
+old mode 100644
+new mode 100755
+diff --git a/src/api/Gio-2.0.gir b/src/api/Gio-2.0.gir
+old mode 100644
+new mode 100755
+diff --git a/src/api/generate.py b/src/api/generate.py
+old mode 100644
+new mode 100755
+diff --git a/src/api/merge.py b/src/api/merge.py
+old mode 100644
+new mode 100755
+diff --git a/src/api/meson.build b/src/api/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/async-task.vala b/src/async-task.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent-connection.vala b/src/barebone/agent-connection.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/.cargo/config.toml b/src/barebone/agent/.cargo/config.toml
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/Cargo.lock b/src/barebone/agent/Cargo.lock
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/Cargo.toml b/src/barebone/agent/Cargo.toml
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/README.md b/src/barebone/agent/README.md
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/agent.lds b/src/barebone/agent/agent.lds
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/build.rs b/src/barebone/agent/build.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/env.sh b/src/barebone/agent/env.sh
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/etc/noalloc.json b/src/barebone/agent/etc/noalloc.json
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/etc/physical.json b/src/barebone/agent/etc/physical.json
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/etc/xnu.json b/src/barebone/agent/etc/xnu.json
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/examples/spawn-observer.js b/src/barebone/agent/examples/spawn-observer.js
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/explore.ts b/src/barebone/agent/explore.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/package.json b/src/barebone/agent/package.json
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/glib.rs b/src/barebone/agent/src/glib.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/gthread.rs b/src/barebone/agent/src/gthread.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/gum.rs b/src/barebone/agent/src/gum.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/hostlink_virtio.rs b/src/barebone/agent/src/hostlink_virtio.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/libc.rs b/src/barebone/agent/src/libc.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/main.rs b/src/barebone/agent/src/main.rs
+old mode 100644
+new mode 100755
+index 8327740b..9ae01657
+--- a/src/barebone/agent/src/main.rs
++++ b/src/barebone/agent/src/main.rs
+@@ -139,11 +139,11 @@ pub unsafe extern "C" fn _start(config_data: *const u8, config_size: usize) {
+     unsafe {
+         CONFIG_DATA = core::slice::from_raw_parts(config_data, config_size);
+ 
+-        xnu::kernel_thread_start(frida_agent_worker, 12345usize as *mut core::ffi::c_void);
++        xnu::kernel_thread_start(nosuke_agent_worker, 12345usize as *mut core::ffi::c_void);
+     }
+ }
+ 
+-unsafe extern "C" fn frida_agent_worker(_parameter: *mut core::ffi::c_void, _wait_result: i32) {
++unsafe extern "C" fn nosuke_agent_worker(_parameter: *mut core::ffi::c_void, _wait_result: i32) {
+     unsafe {
+         bindings::g_set_panic_handler(Some(frida_panic_handler), ptr::null_mut());
+         bindings::gum_init_embedded();
+diff --git a/src/barebone/agent/src/pac.rs b/src/barebone/agent/src/pac.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/symbols.rs b/src/barebone/agent/src/symbols.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/src/xnu.rs b/src/barebone/agent/src/xnu.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/start_qemu.sh b/src/barebone/agent/start_qemu.sh
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/tools/aic.js b/src/barebone/agent/tools/aic.js
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/tools/interrupt-controllers.xml b/src/barebone/agent/tools/interrupt-controllers.xml
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/tools/osvalue.js b/src/barebone/agent/tools/osvalue.js
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/tools/scan_hex_pattern.py b/src/barebone/agent/tools/scan_hex_pattern.py
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/agent/tools/symbolicate.py b/src/barebone/agent/tools/symbolicate.py
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/allocator.vala b/src/barebone/allocator.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/arch-arm/machine.vala b/src/barebone/arch-arm/machine.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/arch-arm64/machine.vala b/src/barebone/arch-arm64/machine.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/arch-unknown/machine.vala b/src/barebone/arch-unknown/machine.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/arch-x86/machine.vala b/src/barebone/arch-x86/machine.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/arch-x86_64/machine.vala b/src/barebone/arch-x86_64/machine.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/barebone-host-session.vala b/src/barebone/barebone-host-session.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/barebone.resources b/src/barebone/barebone.resources
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/c-module.vala b/src/barebone/c-module.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/callback.vala b/src/barebone/callback.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/config.vala b/src/barebone/config.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/console.vala b/src/barebone/console.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/elf.vala b/src/barebone/elf.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/Cargo.lock b/src/barebone/helpers/Cargo.lock
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/Cargo.toml b/src/barebone/helpers/Cargo.toml
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/Makefile b/src/barebone/helpers/Makefile
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/bin/memory_scanner.rs b/src/barebone/helpers/bin/memory_scanner.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/build.rs b/src/barebone/helpers/build.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/helper.lds b/src/barebone/helpers/helper.lds
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/memory-scanner/Cargo.lock b/src/barebone/helpers/memory-scanner/Cargo.lock
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/memory-scanner/Cargo.toml b/src/barebone/helpers/memory-scanner/Cargo.toml
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/helpers/memory-scanner/src/lib.rs b/src/barebone/helpers/memory-scanner/src/lib.rs
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/img4.vala b/src/barebone/img4.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/interceptor.vala b/src/barebone/interceptor.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/layout.vala b/src/barebone/layout.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/lzfse.vala b/src/barebone/lzfse.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/machine.vala b/src/barebone/machine.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/memory-scanner.vala b/src/barebone/memory-scanner.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/meson.build b/src/barebone/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/package-lock.json b/src/barebone/package-lock.json
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/package.json b/src/barebone/package.json
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/qmp-client.vala b/src/barebone/qmp-client.vala
+old mode 100644
+new mode 100755
+index 32ef9fe1..b04ab910
+--- a/src/barebone/qmp-client.vala
++++ b/src/barebone/qmp-client.vala
+@@ -127,7 +127,7 @@ namespace Frida.Barebone {
+ 			string chardev = "vserial0";
+ 			yield add_chardev_from_fd (chardev, fd_name, cancellable);
+ 
+-			yield add_serial_port (chardev, bus, "re.frida.hostlink", "hostlink.port", 1, cancellable);
++			yield add_serial_port (chardev, bus, "com.nosuke.hostlink", "hostlink.port", 1, cancellable);
+ 
+ 			return new Hostlink () {
+ 				connection = SocketConnection.factory_create_connection (local_sock),
+diff --git a/src/barebone/rust-module.vala b/src/barebone/rust-module.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script-runtime/console.ts b/src/barebone/script-runtime/console.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script-runtime/entrypoint.ts b/src/barebone/script-runtime/entrypoint.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script-runtime/gdb.ts b/src/barebone/script-runtime/gdb.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script-runtime/hexdump.ts b/src/barebone/script-runtime/hexdump.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script-runtime/message-dispatcher.ts b/src/barebone/script-runtime/message-dispatcher.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script-runtime/primitives.ts b/src/barebone/script-runtime/primitives.ts
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/script.vala b/src/barebone/script.vala
+old mode 100644
+new mode 100755
+diff --git a/src/barebone/tsconfig.json b/src/barebone/tsconfig.json
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/backend-glue.c b/src/compiler/backend-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/backend.go b/src/compiler/backend.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/backend.symbols b/src/compiler/backend.symbols
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/backend.version b/src/compiler/backend.version
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/build-backend.py b/src/compiler/build-backend.py
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/compiler.resources b/src/compiler/compiler.resources
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/compiler.vala b/src/compiler/compiler.vala
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/frontend_capi.go b/src/compiler/frontend_capi.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/frontend_stdio.go b/src/compiler/frontend_stdio.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/go.mod b/src/compiler/go.mod
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/go.sum b/src/compiler/go.sum
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/meson.build b/src/compiler/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/package-lock.json b/src/compiler/package-lock.json
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/package.json b/src/compiler/package.json
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/protocol_types.go b/src/compiler/protocol_types.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/shims.go b/src/compiler/shims.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/symbol-replacer/go.mod b/src/compiler/symbol-replacer/go.mod
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/symbol-replacer/main.go b/src/compiler/symbol-replacer/main.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/symbol-replacer/trie.go b/src/compiler/symbol-replacer/trie.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/tscompiler.go b/src/compiler/tscompiler.go
+old mode 100644
+new mode 100755
+diff --git a/src/compiler/tsconfig.go b/src/compiler/tsconfig.go
+old mode 100644
+new mode 100755
+diff --git a/src/control-service.vala b/src/control-service.vala
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/launchd.js b/src/darwin/agent/launchd.js
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/osanalytics/index.js b/src/darwin/agent/osanalytics/index.js
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/osanalytics/meson.build b/src/darwin/agent/osanalytics/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/osanalytics/package-lock.json b/src/darwin/agent/osanalytics/package-lock.json
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/osanalytics/package.json b/src/darwin/agent/osanalytics/package.json
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/reportcrash/index.js b/src/darwin/agent/reportcrash/index.js
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/reportcrash/meson.build b/src/darwin/agent/reportcrash/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/reportcrash/package-lock.json b/src/darwin/agent/reportcrash/package-lock.json
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/reportcrash/package.json b/src/darwin/agent/reportcrash/package.json
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/agent/xpcproxy.js b/src/darwin/agent/xpcproxy.js
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/darwin-host-session-glue.m b/src/darwin/darwin-host-session-glue.m
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/darwin-host-session.vala b/src/darwin/darwin-host-session.vala
+old mode 100644
+new mode 100755
+index 2033982e..8058f346
+--- a/src/darwin/darwin-host-session.vala
++++ b/src/darwin/darwin-host-session.vala
+@@ -295,7 +295,7 @@ namespace Frida {
+ 		private async uint inject_agent (uint pid, string agent_parameters, Cancellable? cancellable) throws Error, IOError {
+ 			uint id;
+ 
+-			unowned string entrypoint = "frida_agent_main";
++			unowned string entrypoint = "nosuke_agent_main";
+ #if HAVE_EMBEDDED_ASSETS
+ 			id = yield fruitjector.inject_library_resource (pid, agent, entrypoint, agent_parameters, cancellable);
+ #else
+diff --git a/src/darwin/frida-darwin.resources b/src/darwin/frida-darwin.resources
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/frida-helper-backend-glue.m b/src/darwin/frida-helper-backend-glue.m
+old mode 100644
+new mode 100755
+index 09c6d904..d37d09ac
+--- a/src/darwin/frida-helper-backend-glue.m
++++ b/src/darwin/frida-helper-backend-glue.m
+@@ -1,4 +1,4 @@
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ #include "frida-tvos.h"
+ 
+@@ -765,7 +765,7 @@ _frida_darwin_helper_backend_create_dispatch_context (FridaDarwinHelperBackend *
+   FridaDispatchContext * ctx;
+ 
+   ctx = g_slice_new (FridaDispatchContext);
+-  ctx->dispatch_queue = dispatch_queue_create ("re.frida.helper.queue", DISPATCH_QUEUE_SERIAL);
++  ctx->dispatch_queue = dispatch_queue_create ("com.nosuke.helper.queue", DISPATCH_QUEUE_SERIAL);
+ 
+   self->dispatch_context = ctx;
+ }
+diff --git a/src/darwin/frida-helper-backend.vala b/src/darwin/frida-helper-backend.vala
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/frida-helper-null-backend.vala b/src/darwin/frida-helper-null-backend.vala
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/frida-helper-process.vala b/src/darwin/frida-helper-process.vala
+old mode 100644
+new mode 100755
+index f604c994..d56bae35
+--- a/src/darwin/frida-helper-process.vala
++++ b/src/darwin/frida-helper-process.vala
+@@ -256,7 +256,7 @@ namespace Frida {
+ 		private static void throw_helper_error (GLib.Error e) throws Error, IOError {
+ #if MACOS
+ 			if (e is IOError.CLOSED) {
+-				throw new Error.PERMISSION_DENIED ("Oops, frida-helper appears to have crashed. It may have been killed " +
++				throw new Error.PERMISSION_DENIED ("Oops, nosuke-helper appears to have crashed. It may have been killed " +
+ 					"by the system while trying to access a hardened process. If this is the case, try setting these " +
+ 					"boot arguments: `sudo nvram boot-args=\"-arm64e_preview_abi thid_should_crash=0 " +
+ 					"tss_should_crash=0\"`. For more information, see: https://github.com/frida/frida-core/issues/524");
+@@ -502,9 +502,9 @@ namespace Frida {
+ #if HAVE_EMBEDDED_ASSETS
+ 			FileUtils.chmod (tempdir.path, 0755);
+ 
+-			var blob = Frida.Data.Helper.get_frida_helper_blob ();
++			var blob = Frida.Data.Helper.get_nosuke_helper_blob ();
+ 			helper = new TemporaryHelperFile (
+-				new TemporaryFile.from_stream ("frida-helper",
++				new TemporaryFile.from_stream ("nosuke-helper",
+ 					new MemoryInputStream.from_data (blob.data, null),
+ 					tempdir));
+ 			FileUtils.chmod (helper.path, 0700);
+@@ -561,7 +561,7 @@ namespace Frida {
+ 				if (arm64e_offset == 0 || arm64_offset == 0)
+ 					return false;
+ 
+-				var thin_file = new TemporaryFile.from_stream ("frida-helper-arm64",
++				var thin_file = new TemporaryFile.from_stream ("nosuke-helper-arm64",
+ 					new MemoryInputStream.from_data (universal_data[arm64_offset:arm64_offset + arm64_size], null),
+ 					tempdir);
+ 				FileUtils.chmod (thin_file.path, 0700);
+diff --git a/src/darwin/frida-helper-service-glue.h b/src/darwin/frida-helper-service-glue.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/frida-helper-service-glue.m b/src/darwin/frida-helper-service-glue.m
+old mode 100644
+new mode 100755
+index 9f5491dd..17d9b95b
+--- a/src/darwin/frida-helper-service-glue.m
++++ b/src/darwin/frida-helper-service-glue.m
+@@ -1,4 +1,4 @@
+-#include "frida-helper-service-glue.h"
++#include "nosuke-helper-service-glue.h"
+ 
+ #import <Foundation/Foundation.h>
+ 
+diff --git a/src/darwin/frida-helper-service.vala b/src/darwin/frida-helper-service.vala
+old mode 100644
+new mode 100755
+index 7b7a4e5a..998d5bcf
+--- a/src/darwin/frida-helper-service.vala
++++ b/src/darwin/frida-helper-service.vala
+@@ -5,7 +5,7 @@ namespace Frida {
+ 		Gum.init ();
+ 
+ 		var parent_address = args[1];
+-		var worker = new Thread<int> ("frida-helper-main-loop", () => {
++		var worker = new Thread<int> ("nosuke-helper-main-loop", () => {
+ 			var service = new DarwinHelperService (parent_address);
+ 
+ 			var exit_code = service.run ();
+diff --git a/src/darwin/frida-helper-types.vala b/src/darwin/frida-helper-types.vala
+old mode 100644
+new mode 100755
+index 4a8309d5..eb0b4c19
+--- a/src/darwin/frida-helper-types.vala
++++ b/src/darwin/frida-helper-types.vala
+@@ -46,7 +46,7 @@ namespace Frida {
+ 		public abstract async MappedLibraryBlob? try_mmap (Bytes blob, Cancellable? cancellable) throws Error, IOError;
+ 	}
+ 
+-	[DBus (name = "re.frida.Helper")]
++	[DBus (name = "com.nosuke.Helper")]
+ 	public interface DarwinRemoteHelper : Object {
+ 		public signal void output (uint pid, int fd, uint8[] data);
+ 		public signal void spawn_added (HostSpawnInfo info);
+@@ -126,7 +126,7 @@ namespace Frida {
+ 	}
+ 
+ 	namespace ObjectPath {
+-		public const string HELPER = "/re/frida/Helper";
+-		public const string SYSTEM_SESSION_PROVIDER = "/re/frida/SystemSessionProvider";
++		public const string HELPER = "/com/nosuke/Helper";
++		public const string SYSTEM_SESSION_PROVIDER = "/com/nosuke/SystemSessionProvider";
+ 	}
+ }
+diff --git a/src/darwin/fruitjector.vala b/src/darwin/fruitjector.vala
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/icon-helpers.h b/src/darwin/icon-helpers.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/icon-helpers.m b/src/darwin/icon-helpers.m
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/frida-helper.plist b/src/darwin/nosuke-helper.plist
+old mode 100644
+new mode 100755
+similarity index 89%
+rename from src/darwin/frida-helper.plist
+rename to src/darwin/nosuke-helper.plist
+index 46c64f67..a83f8eae
+--- a/src/darwin/frida-helper.plist
++++ b/src/darwin/nosuke-helper.plist
+@@ -5,11 +5,11 @@
+ 	<key>CFBundleDevelopmentRegion</key>
+ 	<string>English</string>
+ 	<key>CFBundleIdentifier</key>
+-	<string>re.frida.Helper</string>
++	<string>re.nosuke.Helper</string>
+ 	<key>CFBundleInfoDictionaryVersion</key>
+ 	<string>6.0</string>
+ 	<key>CFBundleName</key>
+-	<string>Frida</string>
++	<string>Nosuke</string>
+ 	<key>CFBundleVersion</key>
+ 	<string>1.0</string>
+ 	<key>SecTaskAccess</key>
+diff --git a/src/darwin/frida-helper.symbols b/src/darwin/nosuke-helper.symbols
+old mode 100644
+new mode 100755
+similarity index 100%
+rename from src/darwin/frida-helper.symbols
+rename to src/darwin/nosuke-helper.symbols
+diff --git a/src/darwin/frida-helper.xcent b/src/darwin/nosuke-helper.xcent
+old mode 100644
+new mode 100755
+similarity index 99%
+rename from src/darwin/frida-helper.xcent
+rename to src/darwin/nosuke-helper.xcent
+index 01a54e6b..cdc34be4
+--- a/src/darwin/frida-helper.xcent
++++ b/src/darwin/nosuke-helper.xcent
+@@ -7,7 +7,7 @@
+ 	<key>adi-client</key>
+ 	<string>166430402</string>
+ 	<key>application-identifier</key>
+-	<string>re.frida.Helper</string>
++	<string>re.nosuke.Helper</string>
+ 	<key>aps-connection-initiate</key>
+ 	<true/>
+ 	<key>auth-key-vault-client</key>
+diff --git a/src/darwin/policy-softener-glue.c b/src/darwin/policy-softener-glue.c
+old mode 100644
+new mode 100755
+index b1fc23bf..e9a6c944
+--- a/src/darwin/policy-softener-glue.c
++++ b/src/darwin/policy-softener-glue.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ #if defined (HAVE_IOS) || defined (HAVE_TVOS) || defined (HAVE_XROS)
+ # include "policyd.h"
+diff --git a/src/darwin/policy-softener.vala b/src/darwin/policy-softener.vala
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd-client.c b/src/darwin/policyd-client.c
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd-client.h b/src/darwin/policyd-client.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd-server.c b/src/darwin/policyd-server.c
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd-server.h b/src/darwin/policyd-server.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd.c b/src/darwin/policyd.c
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd.defs b/src/darwin/policyd.defs
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/policyd.h b/src/darwin/policyd.h
+old mode 100644
+new mode 100755
+index b92cad28..97c3912f
+--- a/src/darwin/policyd.h
++++ b/src/darwin/policyd.h
+@@ -3,7 +3,7 @@
+ 
+ #include "policyd-client.h"
+ 
+-#define FRIDA_POLICYD_SERVICE_NAME "re.frida.policyd"
++#define FRIDA_POLICYD_SERVICE_NAME "com.nosuke.policyd"
+ 
+ int frida_policyd_main (void);
+ 
+diff --git a/src/darwin/springboard.h b/src/darwin/springboard.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/springboard.m b/src/darwin/springboard.m
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/substituted-client.c b/src/darwin/substituted-client.c
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/substituted-client.h b/src/darwin/substituted-client.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/substituted.defs b/src/darwin/substituted.defs
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/substituted2-client.c b/src/darwin/substituted2-client.c
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/substituted2-client.h b/src/darwin/substituted2-client.h
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/substituted2.defs b/src/darwin/substituted2.defs
+old mode 100644
+new mode 100755
+diff --git a/src/darwin/system-darwin.m b/src/darwin/system-darwin.m
+old mode 100644
+new mode 100755
+diff --git a/src/devkit/meson.build b/src/devkit/meson.build
+old mode 100644
+new mode 100755
+diff --git a/src/droidy/axml.vala b/src/droidy/axml.vala
+old mode 100644
+new mode 100755
+diff --git a/src/droidy/droidy-client.vala b/src/droidy/droidy-client.vala
+old mode 100644
+new mode 100755
+diff --git a/src/droidy/droidy-host-session.vala b/src/droidy/droidy-host-session.vala
+old mode 100644
+new mode 100755
+index 85891fad..30a04d2f
+--- a/src/droidy/droidy-host-session.vala
++++ b/src/droidy/droidy-host-session.vala
+@@ -266,7 +266,7 @@ namespace Frida {
+ 		private Cancellable io_cancellable = new Cancellable ();
+ 
+ 		private const double MIN_SERVER_CHECK_INTERVAL = 5.0;
+-		private const string GADGET_APP_ID = "re.frida.Gadget";
++		private const string GADGET_APP_ID = "com.nosuke.Gadget";
+ 
+ 		public DroidyHostSession (Droidy.DeviceDetails device_details, HostChannelProvider channel_provider,
+ 				string control_endpoint) {
+@@ -446,7 +446,7 @@ namespace Frida {
+ 				if (opts.has_selected_identifiers ()) {
+ 					gadget_is_selected = false;
+ 					opts.enumerate_selected_identifiers (identifier => {
+-						if (identifier == "re.frida.Gadget")
++						if (identifier == "com.nosuke.Gadget")
+ 							gadget_is_selected = true;
+ 					});
+ 				}
+@@ -877,7 +877,7 @@ namespace Frida {
+ 				}
+ 
+ 				if (connection.closed)
+-					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server");
++					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server");
+ 
+ 				var server = new RemoteServer (session, connection, flavor, transport_broker);
+ 				attach_remote_server (server);
+@@ -898,11 +898,11 @@ namespace Frida {
+ 					last_server_check_error = null;
+ 				} else {
+ 					if (e is Error.SERVER_NOT_RUNNING) {
+-						api_error = new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server");
++						api_error = new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server");
+ 					} else if (connection != null) {
+-						api_error = new Error.PROTOCOL ("Incompatible frida-server version");
++						api_error = new Error.PROTOCOL ("Incompatible nosuke-server version");
+ 					} else {
+-						api_error = new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server: %s",
++						api_error = new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server: %s",
+ 							e.message);
+ 					}
+ 
+@@ -1017,7 +1017,7 @@ namespace Frida {
+ 			try {
+ 				string device_serial = device_details.serial;
+ 				string instance_id = Uuid.string_random ().replace ("-", "");
+-				string helper_path = "/data/local/tmp/frida-helper-" + instance_id + ".dex";
++				string helper_path = "/data/local/tmp/nosuke-helper-" + instance_id + ".dex";
+ 
+ 				var helper_dex = new MemoryInputStream.from_bytes (
+ 					new Bytes.static (Frida.Data.Android.get_helper_dex_blob ().data));
+@@ -1044,8 +1044,8 @@ namespace Frida {
+ 
+ 					shell.send_command (("CLASSPATH=%s app_process " +
+ 							"/data/local/tmp " +
+-							"--nice-name=re.frida.helper " +
+-							"re.frida.Helper " +
++							"--nice-name=com.nosuke.helper " +
++							"com.nosuke.Helper " +
+ 							"%s; " +
+ 							"rm -f %s; " +
+ 							"echo BYE.").printf (helper_path, instance_id, helper_path));
+@@ -1065,7 +1065,7 @@ namespace Frida {
+ 				var client = yield Droidy.Client.open (cancellable);
+ 				try {
+ 					yield client.request ("host:transport:" + device_serial, cancellable);
+-					yield client.request_protocol_change ("localabstract:/frida-helper-" + instance_id, cancellable);
++					yield client.request_protocol_change ("localabstract:/nosuke-helper-" + instance_id, cancellable);
+ 				} catch (GLib.Error e) {
+ 					client.close.begin ();
+ 					throw e;
+diff --git a/src/droidy/injector.vala b/src/droidy/injector.vala
+old mode 100644
+new mode 100755
+diff --git a/src/droidy/jdwp.vala b/src/droidy/jdwp.vala
+old mode 100644
+new mode 100755
+diff --git a/src/embed-agent.py b/src/embed-agent.py
+old mode 100644
+new mode 100755
+index cfb4a594..c015e031
+--- a/src/embed-agent.py
++++ b/src/embed-agent.py
+@@ -33,7 +33,7 @@ def main(argv):
+             if agent is None:
+                 continue
+             arch = detect_pefile_arch(agent)
+-            embedded_agent = priv_dir / f"frida-agent-{arch}.dll"
++            embedded_agent = priv_dir / f"nosuke-agent-{arch}.dll"
+             embedded_dbghelp = priv_dir / f"dbghelp-{arch}.dll"
+             embedded_symsrv = priv_dir / f"symsrv-{arch}.dll"
+ 
+@@ -52,14 +52,14 @@ def main(argv):
+             embedded_assets += [embedded_agent, embedded_dbghelp, embedded_symsrv]
+             pending_archs.remove(arch)
+         for missing_arch in pending_archs:
+-            embedded_agent = priv_dir / f"frida-agent-{missing_arch}.dll"
++            embedded_agent = priv_dir / f"nosuke-agent-{missing_arch}.dll"
+             embedded_dbghelp = priv_dir / f"dbghelp-{missing_arch}.dll"
+             embedded_symsrv = priv_dir / f"symsrv-{missing_arch}.dll"
+             for asset in {embedded_agent, embedded_dbghelp, embedded_symsrv}:
+                 asset.write_bytes(b"")
+                 embedded_assets += [asset]
+     elif host_os in {"macos", "ios", "watchos", "tvos", "xros"}:
+-        embedded_agent = priv_dir / "frida-agent.dylib"
++        embedded_agent = priv_dir / "nosuke-agent.dylib"
+         if agent_modern is not None and agent_legacy is not None:
+             subprocess.run(lipo + [agent_modern, agent_legacy, "-create", "-output", embedded_agent],
+                            check=True)
+@@ -73,14 +73,14 @@ def main(argv):
+                               (agent_legacy, "32"),
+                               (agent_emulated_modern, "arm64"),
+                               (agent_emulated_legacy, "arm")]:
+-            embedded_agent = priv_dir / f"frida-agent-{flavor}.so"
++            embedded_agent = priv_dir / f"nosuke-agent-{flavor}.so"
+             if agent is not None:
+                 shutil.copy(agent, embedded_agent)
+             else:
+                 embedded_agent.write_bytes(b"")
+             embedded_assets += [embedded_agent]
+     elif host_os in {"freebsd", "qnx"}:
+-        embedded_agent = priv_dir / "frida-agent.so"
++        embedded_agent = priv_dir / "nosuke-agent.so"
+         agent = agent_modern if agent_modern is not None else agent_legacy
+         shutil.copy(agent, embedded_agent)
+         embedded_assets += [embedded_agent]
+diff --git a/src/embed-helper.py b/src/embed-helper.py
+old mode 100644
+new mode 100755
+index 35c5c9f7..835279cc
+--- a/src/embed-helper.py
++++ b/src/embed-helper.py
+@@ -28,16 +28,16 @@ def main(argv):
+             if helper is None:
+                 continue
+             arch = detect_pefile_arch(helper)
+-            embedded_helper = priv_dir / f"frida-helper-{arch}.exe"
++            embedded_helper = priv_dir / f"nosuke-helper-{arch}.exe"
+             shutil.copy(helper, embedded_helper)
+             embedded_assets += [embedded_helper]
+             pending_archs.remove(arch)
+         for missing_arch in pending_archs:
+-            embedded_helper = priv_dir / f"frida-helper-{missing_arch}.exe"
++            embedded_helper = priv_dir / f"nosuke-helper-{missing_arch}.exe"
+             embedded_helper.write_bytes(b"")
+             embedded_assets += [embedded_helper]
+     elif host_os in {"macos", "ios", "watchos", "tvos", "xros"}:
+-        embedded_helper = priv_dir / "frida-helper"
++        embedded_helper = priv_dir / "nosuke-helper"
+ 
+         if helper_modern is not None and helper_legacy is not None:
+             subprocess.run(lipo + [helper_modern, helper_legacy, "-create", "-output", embedded_helper],
+@@ -51,8 +51,8 @@ def main(argv):
+ 
+         embedded_assets += [embedded_helper]
+     else:
+-        embedded_helper_modern = priv_dir / f"frida-helper-64"
+-        embedded_helper_legacy = priv_dir / f"frida-helper-32"
++        embedded_helper_modern = priv_dir / f"nosuke-helper-64"
++        embedded_helper_legacy = priv_dir / f"nosuke-helper-32"
+ 
+         if helper_modern is not None:
+             shutil.copy(helper_modern, embedded_helper_modern)
+diff --git a/src/file-monitor.vala b/src/file-monitor.vala
+old mode 100644
+new mode 100755
+diff --git a/src/freebsd/binjector-glue.c b/src/freebsd/binjector-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/freebsd/binjector.vala b/src/freebsd/binjector.vala
+old mode 100644
+new mode 100755
+diff --git a/src/freebsd/freebsd-host-session.vala b/src/freebsd/freebsd-host-session.vala
+old mode 100644
+new mode 100755
+index 245747ab..0dee77cb
+--- a/src/freebsd/freebsd-host-session.vala
++++ b/src/freebsd/freebsd-host-session.vala
+@@ -132,7 +132,7 @@ namespace Frida {
+ 
+ 			var stream_request = Pipe.open (t.local_address, cancellable);
+ 
+-			var id = yield binjector.inject_library_resource (pid, agent_desc, "frida_agent_main",
++			var id = yield binjector.inject_library_resource (pid, agent_desc, "nosuke_agent_main",
+ 				make_agent_parameters (pid, t.remote_address, options), cancellable);
+ 			injectee_by_pid[pid] = id;
+ 
+diff --git a/src/freebsd/system-freebsd.c b/src/freebsd/system-freebsd.c
+old mode 100644
+new mode 100755
+diff --git a/src/frida-glue.c b/src/frida-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/frida.vala b/src/frida.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/cs-signature.vala b/src/fruity/cs-signature.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/debugger-mappings.vala b/src/fruity/debugger-mappings.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor-darwin.m b/src/fruity/device-monitor-darwin.m
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor-linux.vala b/src/fruity/device-monitor-linux.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor-macos.vala b/src/fruity/device-monitor-macos.vala
+old mode 100644
+new mode 100755
+index 063af220..1a0215b7
+--- a/src/fruity/device-monitor-macos.vala
++++ b/src/fruity/device-monitor-macos.vala
+@@ -8,7 +8,7 @@ namespace Frida.Fruity {
+ 
+ 		private XpcClient? pairingd;
+ 		private Darwin.GCD.DispatchQueue queue =
+-			new Darwin.GCD.DispatchQueue ("re.frida.fruity.remotepairing", Darwin.GCD.DispatchQueueAttr.SERIAL);
++			new Darwin.GCD.DispatchQueue ("com.nosuke.fruity.remotepairing", Darwin.GCD.DispatchQueueAttr.SERIAL);
+ 
+ 		public async void start (Cancellable? cancellable) throws IOError {
+ 			pairingd = XpcClient.make_for_mach_service ("com.apple.CoreDevice.remotepairingd", queue);
+diff --git a/src/fruity/device-monitor-portable.vala b/src/fruity/device-monitor-portable.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor-unix.c b/src/fruity/device-monitor-unix.c
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor-windows.c b/src/fruity/device-monitor-windows.c
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor-windows.vala b/src/fruity/device-monitor-windows.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/device-monitor.vala b/src/fruity/device-monitor.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/dns.vala b/src/fruity/dns.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/dtx.vala b/src/fruity/dtx.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/fruity-host-session.vala b/src/fruity/fruity-host-session.vala
+old mode 100644
+new mode 100755
+index 0645fa44..141b0131
+--- a/src/fruity/fruity-host-session.vala
++++ b/src/fruity/fruity-host-session.vala
+@@ -219,7 +219,7 @@ namespace Frida {
+ 		private Cancellable io_cancellable = new Cancellable ();
+ 
+ 		private const double MIN_SERVER_CHECK_INTERVAL = 5.0;
+-		private const string GADGET_APP_ID = "re.frida.Gadget";
++		private const string GADGET_APP_ID = "com.nosuke.Gadget";
+ 		private const string DEBUGSERVER_ENDPOINT_17PLUS = "com.apple.internal.dt.remote.debugproxy";
+ 		private const string DEBUGSERVER_ENDPOINT_14PLUS = "com.apple.debugserver.DVTSecureSocketProxy";
+ 		private const string DEBUGSERVER_ENDPOINT_LEGACY = "com.apple.debugserver?tls=handshake-only";
+@@ -1338,7 +1338,7 @@ namespace Frida {
+ 				}
+ 
+ 				if (connection.closed)
+-					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server");
++					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server");
+ 
+ 				var server = new RemoteServer (flavor, session, connection, channel, device, transport_broker);
+ 				attach_remote_server (server);
+@@ -1361,9 +1361,9 @@ namespace Frida {
+ 					if (e is Error) {
+ 						api_error = e;
+ 					} else if (connection != null) {
+-						api_error = new Error.PROTOCOL ("Incompatible frida-server version");
++						api_error = new Error.PROTOCOL ("Incompatible nosuke-server version");
+ 					} else {
+-						api_error = new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server: %s",
++						api_error = new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server: %s",
+ 							e.message);
+ 					}
+ 
+diff --git a/src/fruity/helpers/Makefile b/src/fruity/helpers/Makefile
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/helpers/symbol-fetcher.c b/src/fruity/helpers/symbol-fetcher.c
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/helpers/symbol-resolver.c b/src/fruity/helpers/symbol-resolver.c
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/helpers/upload-api.h b/src/fruity/helpers/upload-api.h
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/helpers/upload-listener.c b/src/fruity/helpers/upload-listener.c
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/helpers/upload-receiver.c b/src/fruity/helpers/upload-receiver.c
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/injector.vala b/src/fruity/injector.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/installation-proxy.vala b/src/fruity/installation-proxy.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/kcdata.vala b/src/fruity/kcdata.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/kdebug.vala b/src/fruity/kdebug.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/keyed-archive.vala b/src/fruity/keyed-archive.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/kperfdata.vala b/src/fruity/kperfdata.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/lldb.vala b/src/fruity/lldb.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/lockdown.vala b/src/fruity/lockdown.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/ncm.vala b/src/fruity/ncm.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/network-stack.vala b/src/fruity/network-stack.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/opack.vala b/src/fruity/opack.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/pairing.vala b/src/fruity/pairing.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/plist-service.vala b/src/fruity/plist-service.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/plist.vala b/src/fruity/plist.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/springboard-services.vala b/src/fruity/springboard-services.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/tls-psk.vala b/src/fruity/tls-psk.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/tunnel.vala b/src/fruity/tunnel.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/usb.vala b/src/fruity/usb.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/usbmux.vala b/src/fruity/usbmux.vala
+old mode 100644
+new mode 100755
+diff --git a/src/fruity/xpc.vala b/src/fruity/xpc.vala
+old mode 100644
+new mode 100755
+diff --git a/src/gdb.vala b/src/gdb.vala
+old mode 100644
+new mode 100755
+diff --git a/src/helper.resources b/src/helper.resources
+old mode 100644
+new mode 100755
+diff --git a/src/host-session-service.vala b/src/host-session-service.vala
+old mode 100644
+new mode 100755
+index a76047a0..0be9f502
+--- a/src/host-session-service.vala
++++ b/src/host-session-service.vala
+@@ -688,7 +688,7 @@ namespace Frida {
+ 				promise.resolve (entry);
+ 			} catch (GLib.Error e) {
+ 				if (e is IOError.CANCELLED && (cancellable == null || !cancellable.is_cancelled ())) {
+-					e = new Error.PROCESS_NOT_RESPONDING ("Process with pid %u either refused to load frida-agent, " +
++					e = new Error.PROCESS_NOT_RESPONDING ("Process with pid %u either refused to load nosuke-agent, " +
+ 						"or terminated during injection", pid);
+ 				}
+ 
+diff --git a/src/icons.resources b/src/icons.resources
+old mode 100644
+new mode 100755
+diff --git a/src/icons/barebone.png b/src/icons/barebone.png
+old mode 100644
+new mode 100755
+diff --git a/src/icons/droidy.png b/src/icons/droidy.png
+old mode 100644
+new mode 100755
+diff --git a/src/icons/fruity-network.png b/src/icons/fruity-network.png
+old mode 100644
+new mode 100755
+diff --git a/src/icons/local.png b/src/icons/local.png
+old mode 100644
+new mode 100755
+diff --git a/src/icons/portal.png b/src/icons/portal.png
+old mode 100644
+new mode 100755
+diff --git a/src/icons/simmy.png b/src/icons/simmy.png
+old mode 100644
+new mode 100755
+diff --git a/src/icons/socket.png b/src/icons/socket.png
+old mode 100644
+new mode 100755
+diff --git a/src/linux/activity-sampler.vala b/src/linux/activity-sampler.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/frida-helper-backend-glue.c b/src/linux/frida-helper-backend-glue.c
+old mode 100644
+new mode 100755
+index 4af169ad..515aa04a
+--- a/src/linux/frida-helper-backend-glue.c
++++ b/src/linux/frida-helper-backend-glue.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ #include <sys/syscall.h>
+ 
+diff --git a/src/linux/frida-helper-backend-types.c b/src/linux/frida-helper-backend-types.c
+old mode 100644
+new mode 100755
+index 9513fa3b..0153c8d3
+--- a/src/linux/frida-helper-backend-types.c
++++ b/src/linux/frida-helper-backend-types.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ #include "helpers/inject-context.h"
+ 
+ G_STATIC_ASSERT (sizeof (FridaHelperBootstrapContext) == sizeof (FridaBootstrapContext));
+diff --git a/src/linux/frida-helper-backend.resources b/src/linux/frida-helper-backend.resources
+old mode 100644
+new mode 100755
+diff --git a/src/linux/frida-helper-backend.vala b/src/linux/frida-helper-backend.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/frida-helper-process.vala b/src/linux/frida-helper-process.vala
+old mode 100644
+new mode 100755
+index 2e92db04..fc73ae8f
+--- a/src/linux/frida-helper-process.vala
++++ b/src/linux/frida-helper-process.vala
+@@ -642,13 +642,13 @@ namespace Frida {
+ 			this.tempdir = tempdir;
+ 
+ #if HAVE_EMBEDDED_ASSETS
+-			var blob32 = Frida.Data.Helper.get_frida_helper_32_blob ();
++			var blob32 = Frida.Data.Helper.get_nosuke_helper_32_blob ();
+ 			if (blob32.data.length > 0)
+-				helper32 = make_temporary_helper ("frida-helper-32", blob32.data);
++				helper32 = make_temporary_helper ("nosuke-helper-32", blob32.data);
+ 
+-			var blob64 = Frida.Data.Helper.get_frida_helper_64_blob ();
++			var blob64 = Frida.Data.Helper.get_nosuke_helper_64_blob ();
+ 			if (blob64.data.length > 0)
+-				helper64 = make_temporary_helper ("frida-helper-64", blob64.data);
++				helper64 = make_temporary_helper ("nosuke-helper-64", blob64.data);
+ #else
+ 			var tpl = PathTemplate (Frida.helper_path);
+ 			string path = tpl.expand ((sizeof (void *) == 8) ? "32" : "64");
+diff --git a/src/linux/frida-helper-service.vala b/src/linux/frida-helper-service.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/frida-helper-types.vala b/src/linux/frida-helper-types.vala
+old mode 100644
+new mode 100755
+index fee8ae8d..c424c3db
+--- a/src/linux/frida-helper-types.vala
++++ b/src/linux/frida-helper-types.vala
+@@ -42,7 +42,7 @@ namespace Frida {
+ 		CONTROL_CHANNEL,
+ 	}
+ 
+-	[DBus (name = "re.frida.Helper")]
++	[DBus (name = "com.nosuke.Helper")]
+ 	public interface LinuxRemoteHelper : Object {
+ 		public signal void output (uint pid, int fd, uint8[] data);
+ 		public signal void uninjected (uint id);
+@@ -88,6 +88,6 @@ namespace Frida {
+ 	}
+ 
+ 	namespace ObjectPath {
+-		public const string HELPER = "/re/frida/Helper";
++		public const string HELPER = "/com/nosuke/Helper";
+ 	}
+ }
+diff --git a/src/linux/helpers/Makefile b/src/linux/helpers/Makefile
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/activity-sampler.bpf.c b/src/linux/helpers/activity-sampler.bpf.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/arm/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/arm/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/arm/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/arm/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/arm64/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/arm64/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/arm64/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/arm64/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/arm64be/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/arm64be/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/arm64be/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/arm64be/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/armbe/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/armbe/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/armbe/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/armbe/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mips/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/mips/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mips/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/mips/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mips64/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/mips64/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mips64/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/mips64/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mips64el/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/mips64el/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mips64el/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/mips64el/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mipsel/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/mipsel/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/mipsel/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/mipsel/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/noarch-big/activity-sampler.elf b/src/linux/helpers/artifacts/bpf/noarch-big/activity-sampler.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/noarch-little/activity-sampler.elf b/src/linux/helpers/artifacts/bpf/noarch-little/activity-sampler.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/x86/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/x86/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/x86/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/x86/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/x86_64/spawn-gater.elf b/src/linux/helpers/artifacts/bpf/x86_64/spawn-gater.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/bpf/x86_64/syscall-tracer.elf b/src/linux/helpers/artifacts/bpf/x86_64/syscall-tracer.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm/bootstrapper.bin b/src/linux/helpers/artifacts/native/arm/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm/loader.bin b/src/linux/helpers/artifacts/native/arm/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm/zymbiote.elf b/src/linux/helpers/artifacts/native/arm/zymbiote.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64/bootstrapper.bin b/src/linux/helpers/artifacts/native/arm64/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64/loader.bin b/src/linux/helpers/artifacts/native/arm64/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64/zymbiote.elf b/src/linux/helpers/artifacts/native/arm64/zymbiote.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64be/bootstrapper.bin b/src/linux/helpers/artifacts/native/arm64be/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64be/loader.bin b/src/linux/helpers/artifacts/native/arm64be/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64beilp32/bootstrapper.bin b/src/linux/helpers/artifacts/native/arm64beilp32/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/arm64beilp32/loader.bin b/src/linux/helpers/artifacts/native/arm64beilp32/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/armbe8/bootstrapper.bin b/src/linux/helpers/artifacts/native/armbe8/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/armbe8/loader.bin b/src/linux/helpers/artifacts/native/armbe8/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mips/bootstrapper.bin b/src/linux/helpers/artifacts/native/mips/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mips/loader.bin b/src/linux/helpers/artifacts/native/mips/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mips64/bootstrapper.bin b/src/linux/helpers/artifacts/native/mips64/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mips64/loader.bin b/src/linux/helpers/artifacts/native/mips64/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mips64el/bootstrapper.bin b/src/linux/helpers/artifacts/native/mips64el/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mips64el/loader.bin b/src/linux/helpers/artifacts/native/mips64el/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mipsel/bootstrapper.bin b/src/linux/helpers/artifacts/native/mipsel/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/mipsel/loader.bin b/src/linux/helpers/artifacts/native/mipsel/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/x86/bootstrapper.bin b/src/linux/helpers/artifacts/native/x86/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/x86/loader.bin b/src/linux/helpers/artifacts/native/x86/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/x86/zymbiote.elf b/src/linux/helpers/artifacts/native/x86/zymbiote.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/x86_64/bootstrapper.bin b/src/linux/helpers/artifacts/native/x86_64/bootstrapper.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/x86_64/loader.bin b/src/linux/helpers/artifacts/native/x86_64/loader.bin
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/artifacts/native/x86_64/zymbiote.elf b/src/linux/helpers/artifacts/native/x86_64/zymbiote.elf
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/bootstrapper.c b/src/linux/helpers/bootstrapper.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/elf-parser.c b/src/linux/helpers/elf-parser.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/elf-parser.h b/src/linux/helpers/elf-parser.h
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/helper.lds b/src/linux/helpers/helper.lds
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/inject-context.h b/src/linux/helpers/inject-context.h
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/loader.c b/src/linux/helpers/loader.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/meson.build b/src/linux/helpers/meson.build
+old mode 100644
+new mode 100755
+index 32b7865e..ba736ccc
+--- a/src/linux/helpers/meson.build
++++ b/src/linux/helpers/meson.build
+@@ -64,7 +64,7 @@ custom_target('bootstrapper-bin',
+   input: [bootstrapper],
+   output: ['bootstrapper.bin'],
+   command: [objcopy, objcopy_flags, '@INPUT0@', '@OUTPUT0@'],
+-  install_dir: 'share' / 'frida-helpers',
++  install_dir: 'share' / 'nosuke-helpers',
+   install: true,
+ )
+ test('bootstrapper', executable('test-bootstrapper', bootstrapper_sources,
+@@ -83,7 +83,7 @@ custom_target('loader-bin',
+   input: [loader],
+   output: ['loader.bin'],
+   command: [objcopy, objcopy_flags, '@INPUT0@', '@OUTPUT0@'],
+-  install_dir: 'share' / 'frida-helpers',
++  install_dir: 'share' / 'nosuke-helpers',
+   install: true,
+ )
+ 
+@@ -98,7 +98,7 @@ if host_machine.system() == 'android'
+     c_args: zymbiote_flags + extra_flags,
+     link_args: extra_link_args,
+     link_depends: [helper_lds],
+-    install_dir: 'share' / 'frida-helpers',
++    install_dir: 'share' / 'nosuke-helpers',
+     install: true,
+   )
+ endif
+diff --git a/src/linux/helpers/patches/linux-headers-install-portability.patch b/src/linux/helpers/patches/linux-headers-install-portability.patch
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/patches/linux-nolibc-tweaks.patch b/src/linux/helpers/patches/linux-nolibc-tweaks.patch
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/spawn-gater.bpf.c b/src/linux/helpers/spawn-gater.bpf.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/syscall-tracer.bpf.c b/src/linux/helpers/syscall-tracer.bpf.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/syscall.c b/src/linux/helpers/syscall.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/syscall.h b/src/linux/helpers/syscall.h
+old mode 100644
+new mode 100755
+diff --git a/src/linux/helpers/zymbiote.c b/src/linux/helpers/zymbiote.c
+old mode 100644
+new mode 100755
+index b9fa5268..6e72598d
+--- a/src/linux/helpers/zymbiote.c
++++ b/src/linux/helpers/zymbiote.c
+@@ -37,7 +37,7 @@ struct _ZymbioteContext
+ 
+ ZymbioteContext zymbiote =
+ {
+-  .socket_path = "/frida-zymbiote-00000000000000000000000000000000",
++  .socket_path = "/nosuke-zymbiote-00000000000000000000000000000000",
+ };
+ 
+ int frida_zymbiote_replacement_setargv0 (JNIEnv * env, jobject clazz, jstring name);
+diff --git a/src/linux/linjector-glue.c b/src/linux/linjector-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/linux/linjector.vala b/src/linux/linjector.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/linux-host-session.vala b/src/linux/linux-host-session.vala
+old mode 100644
+new mode 100755
+index 3f5cba73..6c0146ec
+--- a/src/linux/linux-host-session.vala
++++ b/src/linux/linux-host-session.vala
+@@ -60,16 +60,16 @@ namespace Frida {
+ 			injector.uninjected.connect (on_uninjected);
+ 
+ #if HAVE_EMBEDDED_ASSETS
+-			var blob32 = Frida.Data.Agent.get_frida_agent_32_so_blob ();
+-			var blob64 = Frida.Data.Agent.get_frida_agent_64_so_blob ();
+-			var emulated_arm = Frida.Data.Agent.get_frida_agent_arm_so_blob ();
+-			var emulated_arm64 = Frida.Data.Agent.get_frida_agent_arm64_so_blob ();
+-			agent = new AgentDescriptor (PathTemplate ("frida-agent-<arch>.so"),
++			var blob32 = Frida.Data.Agent.get_nosuke_agent_32_so_blob ();
++			var blob64 = Frida.Data.Agent.get_nosuke_agent_64_so_blob ();
++			var emulated_arm = Frida.Data.Agent.get_nosuke_agent_arm_so_blob ();
++			var emulated_arm64 = Frida.Data.Agent.get_nosuke_agent_arm64_so_blob ();
++			agent = new AgentDescriptor (PathTemplate ("nosuke-agent-<arch>.so"),
+ 				new Bytes.static (blob32.data),
+ 				new Bytes.static (blob64.data),
+ 				new AgentResource[] {
+-					new AgentResource ("frida-agent-arm.so", new Bytes.static (emulated_arm.data), tempdir),
+-					new AgentResource ("frida-agent-arm64.so", new Bytes.static (emulated_arm64.data), tempdir),
++					new AgentResource ("nosuke-agent-arm.so", new Bytes.static (emulated_arm.data), tempdir),
++					new AgentResource ("nosuke-agent-arm64.so", new Bytes.static (emulated_arm64.data), tempdir),
+ 				},
+ 				AgentMode.INSTANCED,
+ 				tempdir);
+@@ -387,7 +387,7 @@ namespace Frida {
+ 		protected override async Future<IOStream> perform_attach_to (uint pid, HashTable<string, Variant> options,
+ 				Cancellable? cancellable, out Object? transport) throws Error, IOError {
+ 			uint id;
+-			string entrypoint = "frida_agent_main";
++			string entrypoint = "nosuke_agent_main";
+ 			string parameters = make_agent_parameters (pid, "", options);
+ 			AgentFeatures features = CONTROL_CHANNEL;
+ 			var linjector = (Linjector) injector;
+@@ -412,10 +412,10 @@ namespace Frida {
+ 			unowned string name;
+ 			switch (cpu_type_from_pid (pid)) {
+ 				case Gum.CpuType.IA32:
+-					name = "frida-agent-arm.so";
++					name = "nosuke-agent-arm.so";
+ 					break;
+ 				case Gum.CpuType.AMD64:
+-					name = "frida-agent-arm64.so";
++					name = "nosuke-agent-arm64.so";
+ 					break;
+ 				default:
+ 					throw new Error.NOT_SUPPORTED ("Emulated realm is not supported on this architecture");
+@@ -462,7 +462,7 @@ namespace Frida {
+ 
+ 			try {
+ 				string instance_id = Uuid.string_random ().replace ("-", "");
+-				string helper_path = "/data/local/tmp/frida-helper-" + instance_id + ".dex";
++				string helper_path = "/data/local/tmp/nosuke-helper-" + instance_id + ".dex";
+ 				FileUtils.set_data (helper_path, Frida.Data.Android.get_helper_dex_blob ().data);
+ 				Posix.chmod (helper_path, 0644);
+ 
+diff --git a/src/linux/frida-helper.version b/src/linux/nosuke-helper.version
+old mode 100644
+new mode 100755
+similarity index 100%
+rename from src/linux/frida-helper.version
+rename to src/linux/nosuke-helper.version
+diff --git a/src/linux/proc-maps.vala b/src/linux/proc-maps.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/spawn-gater.vala b/src/linux/spawn-gater.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/supersu.vala b/src/linux/supersu.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/symbol-resolver.vala b/src/linux/symbol-resolver.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/syscall-tracer.vala b/src/linux/syscall-tracer.vala
+old mode 100644
+new mode 100755
+diff --git a/src/linux/system-linux.c b/src/linux/system-linux.c
+old mode 100644
+new mode 100755
+index d7e6d0d9..667bc05d
+--- a/src/linux/system-linux.c
++++ b/src/linux/system-linux.c
+@@ -166,7 +166,7 @@ frida_temporary_directory_get_system_tmp (void)
+ 
+   /*
+    * If the temporary directory resides on a file-system which is marked
+-   * `noexec`, then we won't be able to write the frida-agent.so there and
++   * `noexec`, then we won't be able to write the nosuke-agent.so there and
+    * subsequently dlopen() it inside the target application as it will result in
+    * permission denied.
+    *
+diff --git a/src/meson.build b/src/meson.build
+old mode 100644
+new mode 100755
+index 439e5bf8..2b752d27
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -64,7 +64,7 @@ if host_os == 'android' or have_droidy_backend
+ endif
+ 
+ if have_local_backend
+-  post_process_helper = post_process + ['executable', 're.frida.Helper']
++  post_process_helper = post_process + ['executable', 'com.nosuke.Helper']
+ 
+   embed_helper = [
+     python,
+@@ -109,7 +109,7 @@ if have_local_backend
+       base_vala_args,
+       '--pkg=frida-gum-windows-1.0',
+     ]
+-    helper_backend = static_library('frida-helper-backend', helper_backend_sources,
++    helper_backend = static_library('nosuke-helper-backend', helper_backend_sources,
+       vala_args: helper_backend_vala_args,
+       c_args: frida_component_cflags,
+       dependencies: [gio_dep, gee_dep, gum_dep, base_dep],
+@@ -120,13 +120,13 @@ if have_local_backend
+       'windows' / 'frida-helper-service.vala',
+       'windows' / 'frida-helper-service-glue.c',
+     ]
+-    raw_helper = executable('frida-helper-raw', helper_sources,
++    raw_helper = executable('nosuke-helper-raw', helper_sources,
+       vala_args: helper_backend_vala_args,
+       link_with: helper_backend,
+       dependencies: [gio_dep, gee_dep, gum_dep, base_dep, pipe_dep],
+     )
+ 
+-    helper = custom_target('frida-helper',
++    helper = custom_target('nosuke-helper',
+       input: raw_helper,
+       output: helper_name,
+       command: post_process_helper,
+@@ -238,7 +238,7 @@ if have_local_backend
+       ]
+     endif
+     helper_backend_vala_args = base_vala_args
+-    helper_backend = static_library('frida-helper-backend', helper_backend_sources,
++    helper_backend = static_library('nosuke-helper-backend', helper_backend_sources,
+       c_args: frida_component_cflags,
+       vala_args: [
+         helper_backend_vala_args,
+@@ -256,15 +256,15 @@ if have_local_backend
+       'darwin' / 'frida-helper-service.vala',
+       'darwin' / 'frida-helper-service-glue.m',
+     ]
+-    helper_symlist = 'darwin' / 'frida-helper.symbols'
++    helper_symlist = 'darwin' / 'nosuke-helper.symbols'
+     helper_link_args = ['-Wl,-exported_symbols_list,' + meson.current_source_dir() / helper_symlist]
+     helper_link_depends = [helper_symlist]
+     if host_os == 'macos'
+-      helper_plist = 'darwin' / 'frida-helper.plist'
++      helper_plist = 'darwin' / 'nosuke-helper.plist'
+       helper_link_args += ['-Wl,-sectcreate,__TEXT,__info_plist,' + meson.current_source_dir() / helper_plist]
+       helper_link_depends += [helper_plist]
+     endif
+-    raw_helper = executable('frida-helper-raw', helper_sources,
++    raw_helper = executable('nosuke-helper-raw', helper_sources,
+       vala_args: [helper_backend_vala_args, '--pkg=posix'],
+       link_args: [helper_link_args, backend_libs_private],
+       link_depends: helper_link_depends,
+@@ -275,10 +275,10 @@ if have_local_backend
+ 
+     need_universal_helper = assets_mode == 'installed' and helper_compat != ''
+ 
+-    helper = custom_target('frida-helper',
++    helper = custom_target('nosuke-helper',
+       input: [
+         raw_helper,
+-        'darwin' / 'frida-helper.xcent',
++        'darwin' / 'nosuke-helper.xcent',
+       ],
+       output: need_universal_helper ? f'@helper_name@-@host_abi@' : helper_name,
+       command: post_process_helper + '@INPUT1@',
+@@ -288,7 +288,7 @@ if have_local_backend
+     )
+ 
+     if need_universal_helper
+-      custom_target('frida-helper-universal',
++      custom_target('nosuke-helper-universal',
+         input: helper,
+         output: helper_name,
+         command: [
+@@ -416,7 +416,7 @@ if have_local_backend
+       gum_vala_args,
+       '--pkg=posix',
+     ]
+-    helper_backend = static_library('frida-helper-backend', helper_backend_sources,
++    helper_backend = static_library('nosuke-helper-backend', helper_backend_sources,
+       c_args: frida_component_cflags,
+       vala_args: [
+         helper_backend_vala_args,
+@@ -432,10 +432,10 @@ if have_local_backend
+     helper_sources = [
+       'linux' / 'frida-helper-service.vala',
+     ]
+-    helper_symscript = 'linux' / 'frida-helper.version'
++    helper_symscript = 'linux' / 'nosuke-helper.version'
+     helper_link_args = ['-Wl,--version-script,' + meson.current_source_dir() / helper_symscript]
+     helper_link_depends = [helper_symscript]
+-    raw_helper = executable('frida-helper-raw', helper_sources,
++    raw_helper = executable('nosuke-helper-raw', helper_sources,
+       vala_args: helper_backend_vala_args,
+       link_args: helper_link_args,
+       link_depends: helper_link_depends,
+@@ -443,7 +443,7 @@ if have_local_backend
+       dependencies: [gio_dep, gio_unix_dep, gee_dep, gum_dep, base_dep],
+     )
+ 
+-    helper = custom_target('frida-helper',
++    helper = custom_target('nosuke-helper',
+       input: raw_helper,
+       output: helper_name,
+       command: post_process_helper,
+diff --git a/src/package-manager.vala b/src/package-manager.vala
+old mode 100644
+new mode 100755
+diff --git a/src/portal-service.vala b/src/portal-service.vala
+old mode 100644
+new mode 100755
+diff --git a/src/qnx/qinjector-glue.c b/src/qnx/qinjector-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/qnx/qinjector.vala b/src/qnx/qinjector.vala
+old mode 100644
+new mode 100755
+diff --git a/src/qnx/qnx-host-session.vala b/src/qnx/qnx-host-session.vala
+old mode 100644
+new mode 100755
+index 7d5b3e51..6daabac0
+--- a/src/qnx/qnx-host-session.vala
++++ b/src/qnx/qnx-host-session.vala
+@@ -117,7 +117,7 @@ namespace Frida {
+ 
+ 			var stream_request = Pipe.open (t.local_address, cancellable);
+ 
+-			var id = yield qinjector.inject_library_resource (pid, agent_desc, "frida_agent_main",
++			var id = yield qinjector.inject_library_resource (pid, agent_desc, "nosuke_agent_main",
+ 				make_agent_parameters (pid, t.remote_address, options), cancellable);
+ 			injectee_by_pid[pid] = id;
+ 
+diff --git a/src/qnx/system-qnx.c b/src/qnx/system-qnx.c
+old mode 100644
+new mode 100755
+diff --git a/src/simmy/agent/springboard.js b/src/simmy/agent/springboard.js
+old mode 100644
+new mode 100755
+diff --git a/src/simmy/frida-simmy.resources b/src/simmy/frida-simmy.resources
+old mode 100644
+new mode 100755
+diff --git a/src/simmy/simmy-host-session-glue.m b/src/simmy/simmy-host-session-glue.m
+old mode 100644
+new mode 100755
+index 7a4fb59e..7d87c41e
+--- a/src/simmy/simmy-host-session-glue.m
++++ b/src/simmy/simmy-host-session-glue.m
+@@ -83,7 +83,7 @@ _frida_simmy_host_session_backend_start (FridaSimmyHostSessionBackendDeviceAdded
+   FridaSimmyContext * ctx;
+ 
+   ctx = g_slice_new0 (FridaSimmyContext);
+-  ctx->dispatch_queue = dispatch_queue_create ("re.frida.simmy.queue", DISPATCH_QUEUE_SERIAL);
++  ctx->dispatch_queue = dispatch_queue_create ("com.nosuke.simmy.queue", DISPATCH_QUEUE_SERIAL);
+ 
+   ctx->on_device_added = on_device_added;
+   ctx->on_device_added_target = on_device_added_target;
+diff --git a/src/simmy/simmy-host-session.vala b/src/simmy/simmy-host-session.vala
+old mode 100644
+new mode 100755
+diff --git a/src/simmy/text-plist.vala b/src/simmy/text-plist.vala
+old mode 100644
+new mode 100755
+diff --git a/src/socket/socket-host-session.vala b/src/socket/socket-host-session.vala
+old mode 100644
+new mode 100755
+index 02605a2a..ac0c86fe
+--- a/src/socket/socket-host-session.vala
++++ b/src/socket/socket-host-session.vala
+@@ -93,9 +93,9 @@ namespace Frida {
+ 				socket_connection = yield client.connect_async (connectable, cancellable);
+ 			} catch (GLib.Error e) {
+ 				if (e is IOError.CONNECTION_REFUSED)
+-					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server");
++					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server");
+ 				else
+-					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote frida-server: %s", e.message);
++					throw new Error.SERVER_NOT_RUNNING ("Unable to connect to remote nosuke-server: %s", e.message);
+ 			}
+ 
+ 			Socket socket = socket_connection.socket;
+@@ -145,7 +145,7 @@ namespace Frida {
+ 					auth_service = yield connection.get_proxy (null, ObjectPath.AUTHENTICATION_SERVICE,
+ 						DO_NOT_LOAD_PROPERTIES, cancellable);
+ 				} catch (IOError e) {
+-					throw new Error.PROTOCOL ("Incompatible frida-server version");
++					throw new Error.PROTOCOL ("Incompatible nosuke-server version");
+ 				}
+ 
+ 				try {
+@@ -160,7 +160,7 @@ namespace Frida {
+ 				host_session = yield connection.get_proxy (null, ObjectPath.HOST_SESSION, DO_NOT_LOAD_PROPERTIES,
+ 					cancellable);
+ 			} catch (IOError e) {
+-				throw new Error.PROTOCOL ("Incompatible frida-server version");
++				throw new Error.PROTOCOL ("Incompatible nosuke-server version");
+ 			}
+ 
+ 			var entry = new HostEntry (connection, host_session, keepalive_interval);
+diff --git a/src/system.vala b/src/system.vala
+old mode 100644
+new mode 100755
+diff --git a/src/windows/access-helpers.c b/src/windows/access-helpers.c
+old mode 100644
+new mode 100755
+diff --git a/src/windows/access-helpers.h b/src/windows/access-helpers.h
+old mode 100644
+new mode 100755
+diff --git a/src/windows/frida-helper-backend-glue.c b/src/windows/frida-helper-backend-glue.c
+old mode 100644
+new mode 100755
+index b8518bc0..243c7f1e
+--- a/src/windows/frida-helper-backend-glue.c
++++ b/src/windows/frida-helper-backend-glue.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ #include <gio/gio.h>
+ #include <gum/gum.h>
+diff --git a/src/windows/frida-helper-backend.vala b/src/windows/frida-helper-backend.vala
+old mode 100644
+new mode 100755
+diff --git a/src/windows/frida-helper-process-glue.c b/src/windows/frida-helper-process-glue.c
+old mode 100644
+new mode 100755
+index 7c152c68..1a6332e4
+--- a/src/windows/frida-helper-process-glue.c
++++ b/src/windows/frida-helper-process-glue.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-process-glue.h"
++#include "nosuke-helper-process-glue.h"
+ 
+ #define VC_EXTRALEAN
+ #include <objbase.h>
+diff --git a/src/windows/frida-helper-process-glue.h b/src/windows/frida-helper-process-glue.h
+old mode 100644
+new mode 100755
+index c8a2f961..d1dfce4e
+--- a/src/windows/frida-helper-process-glue.h
++++ b/src/windows/frida-helper-process-glue.h
+@@ -1,7 +1,7 @@
+ #ifndef __FRIDA_HELPER_PROCESS_GLUE_H__
+ #define __FRIDA_HELPER_PROCESS_GLUE_H__
+ 
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ G_BEGIN_DECLS
+ 
+diff --git a/src/windows/frida-helper-process.vala b/src/windows/frida-helper-process.vala
+old mode 100644
+new mode 100755
+index 12ce73ca..b0e057ef
+--- a/src/windows/frida-helper-process.vala
++++ b/src/windows/frida-helper-process.vala
+@@ -159,7 +159,7 @@ namespace Frida {
+ 
+ 				stream_request = Pipe.open (transport.local_address, cancellable);
+ 
+-				new Thread<bool> ("frida-helper-factory", obtain_worker);
++				new Thread<bool> ("nosuke-helper-factory", obtain_worker);
+ 			}
+ 
+ 			return yield obtain_request.future.wait_async (cancellable);
+@@ -380,9 +380,9 @@ namespace Frida {
+ 
+ 		public ResourceStore (TemporaryDirectory tempdir) throws Error {
+ #if HAVE_EMBEDDED_ASSETS
+-			var helper_arm64 = add_helper ("arm64", Frida.Data.Helper.get_frida_helper_arm64_exe_blob (), tempdir);
+-			var helper_x86_64 = add_helper ("x86_64", Frida.Data.Helper.get_frida_helper_x86_64_exe_blob (), tempdir);
+-			var helper_x86 = add_helper ("x86", Frida.Data.Helper.get_frida_helper_x86_exe_blob (), tempdir);
++			var helper_arm64 = add_helper ("arm64", Frida.Data.Helper.get_nosuke_helper_arm64_exe_blob (), tempdir);
++			var helper_x86_64 = add_helper ("x86_64", Frida.Data.Helper.get_nosuke_helper_x86_64_exe_blob (), tempdir);
++			var helper_x86 = add_helper ("x86", Frida.Data.Helper.get_nosuke_helper_x86_exe_blob (), tempdir);
+ 
+ 			switch (Gum.Windows.query_native_cpu_type ()) {
+ 				case ARM64:
+@@ -404,7 +404,7 @@ namespace Frida {
+ 
+ #if HAVE_EMBEDDED_ASSETS
+ 		private TemporaryFile add_helper (string name, Frida.Data.Helper.Blob blob, TemporaryDirectory tempdir) throws Error {
+-			var file = new TemporaryFile.from_stream (@"frida-helper-$name.exe",
++			var file = new TemporaryFile.from_stream (@"nosuke-helper-$name.exe",
+ 				new MemoryInputStream.from_data (blob.data, null),
+ 				tempdir);
+ 			helpers.add (file);
+diff --git a/src/windows/frida-helper-service-glue.c b/src/windows/frida-helper-service-glue.c
+old mode 100644
+new mode 100755
+index f00559f3..2f3585e5
+--- a/src/windows/frida-helper-service-glue.c
++++ b/src/windows/frida-helper-service-glue.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-service-glue.h"
++#include "nosuke-helper-service-glue.h"
+ 
+ #include <windows.h>
+ 
+diff --git a/src/windows/frida-helper-service-glue.h b/src/windows/frida-helper-service-glue.h
+old mode 100644
+new mode 100755
+index 5b96d3ce..0fbf1730
+--- a/src/windows/frida-helper-service-glue.h
++++ b/src/windows/frida-helper-service-glue.h
+@@ -1,7 +1,7 @@
+ #ifndef __FRIDA_HELPER_SERVICE_GLUE_H__
+ #define __FRIDA_HELPER_SERVICE_GLUE_H__
+ 
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ G_BEGIN_DECLS
+ 
+diff --git a/src/windows/frida-helper-service.vala b/src/windows/frida-helper-service.vala
+old mode 100644
+new mode 100755
+diff --git a/src/windows/frida-helper-types.vala b/src/windows/frida-helper-types.vala
+old mode 100644
+new mode 100755
+index 0d410202..553d3e71
+--- a/src/windows/frida-helper-types.vala
++++ b/src/windows/frida-helper-types.vala
+@@ -8,7 +8,7 @@ namespace Frida {
+ 			string[] dependencies, uint id, Cancellable? cancellable) throws Error, IOError;
+ 	}
+ 
+-	[DBus (name = "re.frida.Helper")]
++	[DBus (name = "com.nosuke.Helper")]
+ 	public interface WindowsRemoteHelper : Object {
+ 		public signal void uninjected (uint id);
+ 
+@@ -44,6 +44,6 @@ namespace Frida {
+ 	}
+ 
+ 	namespace ObjectPath {
+-		public const string HELPER = "/re/frida/Helper";
++		public const string HELPER = "/com/nosuke/Helper";
+ 	}
+ }
+diff --git a/src/windows/icon-helpers.c b/src/windows/icon-helpers.c
+old mode 100644
+new mode 100755
+diff --git a/src/windows/icon-helpers.h b/src/windows/icon-helpers.h
+old mode 100644
+new mode 100755
+diff --git a/src/windows/system-windows.c b/src/windows/system-windows.c
+old mode 100644
+new mode 100755
+diff --git a/src/windows/wait-handle-source.c b/src/windows/wait-handle-source.c
+old mode 100644
+new mode 100755
+index 35a13d30..1179d8ab
+--- a/src/windows/wait-handle-source.c
++++ b/src/windows/wait-handle-source.c
+@@ -1,4 +1,4 @@
+-#include "frida-helper-backend.h"
++#include "nosuke-helper-backend.h"
+ 
+ #include <windows.h>
+ 
+diff --git a/src/windows/windows-host-session-glue.c b/src/windows/windows-host-session-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/windows/windows-host-session.vala b/src/windows/windows-host-session.vala
+old mode 100644
+new mode 100755
+index 167ea742..6b5d9747
+--- a/src/windows/windows-host-session.vala
++++ b/src/windows/windows-host-session.vala
+@@ -47,7 +47,7 @@ namespace Frida {
+ 			injector.uninjected.connect (on_uninjected);
+ 
+ #if HAVE_EMBEDDED_ASSETS
+-			agent = new AgentDescriptor (PathTemplate ("<arch>\\frida-agent.dll"),
++			agent = new AgentDescriptor (PathTemplate ("<arch>\\nosuke-agent.dll"),
+ 				new Bytes.static (Frida.Data.Agent.get_frida_agent_arm64_dll_blob ().data),
+ 				new Bytes.static (Frida.Data.Agent.get_frida_agent_x86_64_dll_blob ().data),
+ 				new Bytes.static (Frida.Data.Agent.get_frida_agent_x86_dll_blob ().data),
+@@ -251,11 +251,11 @@ namespace Frida {
+ 
+ 			var winjector = injector as Winjector;
+ #if HAVE_EMBEDDED_ASSETS
+-			var id = yield winjector.inject_library_resource (pid, agent, "frida_agent_main",
++			var id = yield winjector.inject_library_resource (pid, agent, "nosuke_agent_main",
+ 				make_agent_parameters (pid, t.remote_address, options), cancellable);
+ #else
+ 			var id = yield winjector.inject_library_file_with_template (pid,
+-				installed_agent_path_template (), "frida_agent_main",
++				installed_agent_path_template (), "nosuke_agent_main",
+ 				make_agent_parameters (pid, t.remote_address, options),
+ 				installed_agent_dependencies (), cancellable);
+ #endif
+diff --git a/src/windows/winjector-glue.c b/src/windows/winjector-glue.c
+old mode 100644
+new mode 100755
+diff --git a/src/windows/winjector.vala b/src/windows/winjector.vala
+old mode 100644
+new mode 100755
+diff --git a/subprojects/brotli.wrap b/subprojects/brotli.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/frida-gum.wrap b/subprojects/frida-gum.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/libbpf.wrap b/subprojects/libbpf.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/libgee.wrap b/subprojects/libgee.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/libnice.wrap b/subprojects/libnice.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/libusb.wrap b/subprojects/libusb.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/lwip.wrap b/subprojects/lwip.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/lzfse.wrap b/subprojects/lzfse.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/nghttp2.wrap b/subprojects/nghttp2.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/ngtcp2.wrap b/subprojects/ngtcp2.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/openssl.wrap b/subprojects/openssl.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/selinux.wrap b/subprojects/selinux.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/termux-elf-cleaner.wrap b/subprojects/termux-elf-cleaner.wrap
+old mode 100644
+new mode 100755
+diff --git a/subprojects/usrsctp.wrap b/subprojects/usrsctp.wrap
+old mode 100644
+new mode 100755
+diff --git a/tests/async-harness.vala b/tests/async-harness.vala
+old mode 100644
+new mode 100755
+diff --git a/tests/frida-tests.p12 b/tests/frida-tests.p12
+old mode 100644
+new mode 100755
+diff --git a/tests/frida-tests.plist b/tests/frida-tests.plist
+old mode 100644
+new mode 100755
+index 5340a45a..6271129e
+--- a/tests/frida-tests.plist
++++ b/tests/frida-tests.plist
+@@ -5,7 +5,7 @@
+ 	<key>CFBundleDevelopmentRegion</key>
+ 	<string>English</string>
+ 	<key>CFBundleIdentifier</key>
+-	<string>re.frida.CoreTests</string>
++	<string>com.nosuke.CoreTests</string>
+ 	<key>CFBundleInfoDictionaryVersion</key>
+ 	<string>6.0</string>
+ 	<key>CFBundleName</key>
+diff --git a/tests/frida-tests.xcent b/tests/frida-tests.xcent
+old mode 100644
+new mode 100755
+index 4401a530..a5a6f4a7
+--- a/tests/frida-tests.xcent
++++ b/tests/frida-tests.xcent
+@@ -13,7 +13,7 @@
+ 	<key>adi-client</key>
+ 	<string>166430402</string>
+ 	<key>application-identifier</key>
+-	<string>re.frida.Tests</string>
++	<string>com.nosuke.Tests</string>
+ 	<key>aps-connection-initiate</key>
+ 	<true/>
+ 	<key>auth-key-vault-client</key>
+diff --git a/tests/labrats.vala b/tests/labrats.vala
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.android-arm.mk b/tests/labrats/Makefile.android-arm.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.android-arm64.mk b/tests/labrats/Makefile.android-arm64.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.android-x86.mk b/tests/labrats/Makefile.android-x86.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.android-x86_64.mk b/tests/labrats/Makefile.android-x86_64.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.freebsd.mk b/tests/labrats/Makefile.freebsd.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.linux.mk b/tests/labrats/Makefile.linux.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.macos.mk b/tests/labrats/Makefile.macos.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/Makefile.qnx.mk b/tests/labrats/Makefile.qnx.mk
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/agent.def b/tests/labrats/agent.def
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/cycler-windows.c b/tests/labrats/cycler-windows.c
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/exception-catcher.m b/tests/labrats/exception-catcher.m
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/forker.c b/tests/labrats/forker.c
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/labrats.sln b/tests/labrats/labrats.sln
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/meson.build b/tests/labrats/meson.build
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/resident-agent-windows-x86.dll b/tests/labrats/resident-agent-windows-x86.dll
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/resident-agent-windows-x86_64.dll b/tests/labrats/resident-agent-windows-x86_64.dll
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/resident-agent.c b/tests/labrats/resident-agent.c
+old mode 100644
+new mode 100755
+index b3ed5af1..705cc24b
+--- a/tests/labrats/resident-agent.c
++++ b/tests/labrats/resident-agent.c
+@@ -48,7 +48,7 @@ on_unload (void)
+ #endif
+ 
+ void
+-frida_agent_main (const char * data, bool * stay_resident)
++nosuke_agent_main (const char * data, bool * stay_resident)
+ {
+   (void) data;
+ 
+diff --git a/tests/labrats/simple-agent.c b/tests/labrats/simple-agent.c
+old mode 100644
+new mode 100755
+index b2d13060..cece7c76
+--- a/tests/labrats/simple-agent.c
++++ b/tests/labrats/simple-agent.c
+@@ -51,7 +51,7 @@ on_unload (void)
+ #endif
+ 
+ void
+-frida_agent_main (const char * data)
++nosuke_agent_main (const char * data)
+ {
+   append_to_log ('m');
+ 
+diff --git a/tests/labrats/sleeper-unix.c b/tests/labrats/sleeper-unix.c
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/sleeper-windows.c b/tests/labrats/sleeper-windows.c
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/spawner-unix.c b/tests/labrats/spawner-unix.c
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/spawner-windows-x86.exe b/tests/labrats/spawner-windows-x86.exe
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/spawner-windows-x86_64.exe b/tests/labrats/spawner-windows-x86_64.exe
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/spawner-windows.c b/tests/labrats/spawner-windows.c
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/spawner.filters b/tests/labrats/spawner.filters
+old mode 100644
+new mode 100755
+diff --git a/tests/labrats/stdio-writer.c b/tests/labrats/stdio-writer.c
+old mode 100644
+new mode 100755
+diff --git a/tests/main.vala b/tests/main.vala
+old mode 100644
+new mode 100755
+diff --git a/tests/meson.build b/tests/meson.build
+old mode 100644
+new mode 100755
+index 72fa8291..dd022708
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -86,7 +86,7 @@ raw_runner = executable('frida-tests-raw', 'main.vala',
+ runner = custom_target('frida-tests',
+   input: [raw_runner, 'frida-tests.xcent'],
+   output: 'frida-tests' + exe_suffix,
+-  command: post_process + ['executable', 're.frida.CoreTests', '@INPUT1@'],
++  command: post_process + ['executable', 'com.nosuke.CoreTests', '@INPUT1@'],
+   build_by_default: true,
+ )
+ 
+diff --git a/tests/pipe/main.c b/tests/pipe/main.c
+old mode 100644
+new mode 100755
+diff --git a/tests/process-resource-usage.c b/tests/process-resource-usage.c
+old mode 100644
+new mode 100755
+diff --git a/tests/process-unix.c b/tests/process-unix.c
+old mode 100644
+new mode 100755
+diff --git a/tests/process-windows.c b/tests/process-windows.c
+old mode 100644
+new mode 100755
+diff --git a/tests/process.vala b/tests/process.vala
+old mode 100644
+new mode 100755
+diff --git a/tests/run.py b/tests/run.py
+old mode 100644
+new mode 100755
+diff --git a/tests/runner-glue.c b/tests/runner-glue.c
+old mode 100644
+new mode 100755
+diff --git a/tests/runner.vala b/tests/runner.vala
+old mode 100644
+new mode 100755
+diff --git a/tests/test-agent-glue.c b/tests/test-agent-glue.c
+old mode 100644
+new mode 100755
+diff --git a/tests/test-agent.vala b/tests/test-agent.vala
+old mode 100644
+new mode 100755
+index b5fdbe31..3276a339
+--- a/tests/test-agent.vala
++++ b/tests/test-agent.vala
+@@ -437,12 +437,12 @@ Interceptor.attach(Process.getModuleByName('libsystem_kernel.dylib').getExportBy
+ #endif
+ #if IOS || TVOS || ANDROID || QNX
+ 			var deployment_dir = Path.get_dirname (Frida.Test.Process.current.filename);
+-			agent_filename = Path.build_filename (deployment_dir, "frida-agent." + shlib_extension);
++			agent_filename = Path.build_filename (deployment_dir, "nosuke-agent." + shlib_extension);
+ #else
+ 			var frida_root_dir = Path.get_dirname (Path.get_dirname (Frida.Test.Process.current.filename));
+-			agent_filename = Path.build_filename (frida_root_dir, "lib", "frida", "frida-agent." + shlib_extension);
++			agent_filename = Path.build_filename (frida_root_dir, "lib", "frida", "nosuke-agent." + shlib_extension);
+ 			if (!FileUtils.test (agent_filename, FileTest.EXISTS))
+-				agent_filename = Path.build_filename (frida_root_dir, "lib", "agent", "frida-agent." + shlib_extension);
++				agent_filename = Path.build_filename (frida_root_dir, "lib", "agent", "nosuke-agent." + shlib_extension);
+ #endif
+ 
+ 			try {
+@@ -452,7 +452,7 @@ Interceptor.attach(Process.getModuleByName('libsystem_kernel.dylib').getExportBy
+ 			}
+ 
+ 			void * main_func_symbol;
+-			var main_func_found = module.symbol ("frida_agent_main", out main_func_symbol);
++			var main_func_found = module.symbol ("nosuke_agent_main", out main_func_symbol);
+ 			assert_true (main_func_found);
+ 			main_impl = (AgentMainFunc) main_func_symbol;
+ 
+diff --git a/tests/test-compiler.vala b/tests/test-compiler.vala
+old mode 100644
+new mode 100755
+index f6b8b4d9..221fb40b
+--- a/tests/test-compiler.vala
++++ b/tests/test-compiler.vala
+@@ -59,7 +59,7 @@ export function log(...items: any[]) {
+ 					test_log.printf ("build-time,%u\n", elapsed_msec);
+ 
+ 					Gum.Process.enumerate_modules (m => {
+-						if ("frida-agent" in m.path) {
++						if ("nosuke-agent" in m.path) {
+ 							var r = m.range;
+ 							test_log.printf (("agent-range,0x%" + uint64.FORMAT_MODIFIER + "x,0x%" +
+ 									uint64.FORMAT_MODIFIER + "x\n"),
+@@ -129,7 +129,7 @@ export function log(...items: any[]) {
+ 					test_log.printf ("build-time,%u\n", elapsed_msec);
+ 
+ 					Gum.Process.enumerate_modules (m => {
+-						if ("frida-agent" in m.path) {
++						if ("nosuke-agent" in m.path) {
+ 							var r = m.range;
+ 							test_log.printf (("agent-range,0x%" + uint64.FORMAT_MODIFIER + "x,0x%" +
+ 									uint64.FORMAT_MODIFIER + "x\n"),
+diff --git a/tests/test-gadget-standalone.js b/tests/test-gadget-standalone.js
+old mode 100644
+new mode 100755
+diff --git a/tests/test-gadget.vala b/tests/test-gadget.vala
+old mode 100644
+new mode 100755
+diff --git a/tests/test-host-session-darwin-glue.m b/tests/test-host-session-darwin-glue.m
+old mode 100644
+new mode 100755
+diff --git a/tests/test-host-session.vala b/tests/test-host-session.vala
+old mode 100644
+new mode 100755
+index 98731f11..621ceaab
+--- a/tests/test-host-session.vala
++++ b/tests/test-host-session.vala
+@@ -3671,7 +3671,7 @@ namespace Frida.HostSessionTest {
+ 			try {
+ 				Cancellable? cancellable = null;
+ 
+-				stdout.printf ("connecting to frida-server\n");
++				stdout.printf ("connecting to nosuke-server\n");
+ 				var host_session = yield prov.create (new NullHostSessionHub (), null, cancellable);
+ 				stdout.printf ("enumerating processes\n");
+ 				var processes = yield host_session.enumerate_processes (make_parameters_dict (), cancellable);
+diff --git a/tests/test-injector.vala b/tests/test-injector.vala
+old mode 100644
+new mode 100755
+index 23f3c6c2..e9d55c34
+--- a/tests/test-injector.vala
++++ b/tests/test-injector.vala
+@@ -258,7 +258,7 @@ namespace Frida.InjectorTest {
+ 				var path = Frida.Test.Labrats.path_to_library (name, arch);
+ 				assert_true (FileUtils.test (path, FileTest.EXISTS));
+ 
+-				yield injector.inject_library_file (process.id, path, "frida_agent_main", data);
++				yield injector.inject_library_file (process.id, path, "nosuke_agent_main", data);
+ 			} catch (GLib.Error e) {
+ 				printerr ("\nFAIL: %s\n\n", e.message);
+ 				assert_not_reached ();
+diff --git a/tests/test-system.vala b/tests/test-system.vala
+old mode 100644
+new mode 100755
+diff --git a/tools/cgo/detect.py b/tools/cgo/detect.py
+old mode 100644
+new mode 100755
+diff --git a/tools/cgo/go.mod b/tools/cgo/go.mod
+old mode 100644
+new mode 100755
+diff --git a/tools/cgo/main.go b/tools/cgo/main.go
+old mode 100644
+new mode 100755
+diff --git a/tools/compile-js-agent.py b/tools/compile-js-agent.py
+old mode 100644
+new mode 100755
+diff --git a/tools/detect-version.py b/tools/detect-version.py
+old mode 100644
+new mode 100755
+diff --git a/tools/executable-no-exports-freebsd.version b/tools/executable-no-exports-freebsd.version
+old mode 100644
+new mode 100755
+diff --git a/tools/executable-no-exports.symbols b/tools/executable-no-exports.symbols
+old mode 100644
+new mode 100755
+diff --git a/tools/executable-no-exports.version b/tools/executable-no-exports.version
+old mode 100644
+new mode 100755
+diff --git a/tools/generate-provider-icons.py b/tools/generate-provider-icons.py
+old mode 100644
+new mode 100755
+diff --git a/tools/meson.build b/tools/meson.build
+old mode 100644
+new mode 100755
+diff --git a/tools/modulate.py b/tools/modulate.py
+old mode 100644
+new mode 100755
+diff --git a/tools/post-process.py b/tools/post-process.py
+old mode 100644
+new mode 100755
+diff --git a/tools/resource-compiler.vala b/tools/resource-compiler.vala
+old mode 100644
+new mode 100755
+diff --git a/vapi/android.vapi b/vapi/android.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/config.vapi b/vapi/config.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/corefoundation.vapi b/vapi/corefoundation.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/darwin-gcd.vapi b/vapi/darwin-gcd.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/darwin-systemconfiguration.h b/vapi/darwin-systemconfiguration.h
+old mode 100644
+new mode 100755
+diff --git a/vapi/darwin-systemconfiguration.vapi b/vapi/darwin-systemconfiguration.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/darwin-xnu.vapi b/vapi/darwin-xnu.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/darwin-xpc.vapi b/vapi/darwin-xpc.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/freebsd.vapi b/vapi/freebsd.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/gthread-2.0.vapi b/vapi/gthread-2.0.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/jni.vapi b/vapi/jni.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libbpf.vapi b/vapi/libbpf.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libbrotlidec.vapi b/vapi/libbrotlidec.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libbrotlienc.vapi b/vapi/libbrotlienc.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libnghttp2.vapi b/vapi/libnghttp2.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libngtcp2.vapi b/vapi/libngtcp2.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libngtcp2_crypto_ossl.vapi b/vapi/libngtcp2_crypto_ossl.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libngtcp2_crypto_quictls.vapi b/vapi/libngtcp2_crypto_quictls.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libselinux.vapi b/vapi/libselinux.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/libsepol.vapi b/vapi/libsepol.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/lwip.vapi b/vapi/lwip.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/lzfse.vapi b/vapi/lzfse.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/minizip.vapi b/vapi/minizip.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/nice.vapi b/vapi/nice.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/openssl.vapi b/vapi/openssl.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/quickjs.vapi b/vapi/quickjs.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/usrsctp.vapi b/vapi/usrsctp.vapi
+old mode 100644
+new mode 100755
+diff --git a/vapi/windows-windns.vapi b/vapi/windows-windns.vapi
+old mode 100644
+new mode 100755

@@ -172,6 +172,10 @@ resetprop ro.serialno 865146042407069
 
 ## 第五阶段：网络环境伪装
 
+> ⚠️ **此模块会导致 MuMu 模拟器网络异常、APP 无法联网！**  
+> `fix_k40s_telephony_v3` 内含守护进程持续 `resetprop` 覆盖 `gsm.network.type` / `gsm.version.baseband`，模拟器的网络桥接层依赖原始属性进行路由，被覆盖后 DNS/TCP 连接中断。  
+> **仅建议在真机上使用此模块。源码文件已备份为 `fix_k40s_telephony_v3.disabled`。**
+
 ### 关键参数
 
 | 参数 | Key | 目标值 |
@@ -270,5 +274,5 @@ echo '=== Baseband ===' && getprop gsm.version.baseband
 | fix_k40s_fingerprint | 修正系统指纹和安全补丁 | `fix_k40s_fingerprint.zip` |
 | hide_mumu_files | 隐藏 MuMu 特征文件和目录 | `hide_mumu_files.zip` |
 | fix_k40s_serial_safe | 固化设备序列号 | `fix_k40s_serial_safe.zip` |
-| fix_k40s_telephony_v3 | 网络环境伪装（守护进程） | `fix_k40s_telephony_v3.zip` |
+| fix_k40s_telephony_v3 | ~~网络环境伪装（守护进程）~~ ⚠️ 已禁用 | `fix_k40s_telephony_v3.disabled` |
 | remove_mumu_ads_v2 | 去除广告与游戏中心 | `remove_mumu_ads_v2.zip` |
